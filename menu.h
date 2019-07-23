@@ -3,7 +3,6 @@
 #include <windows.h>
 #include <cstring>
 #include "cores.h"
-#include "cadastroFuncionario.h"
 using namespace std;
 
 void menu();
@@ -107,47 +106,9 @@ void login()
     }
 }
 
-void cadastroDoAdmin()
-{
-    tela();
-
-        gotoxy(30,5);
-        preto;
-        bbranco;
-        cout << " MENU CADASTRAR ";
-
-        gotoxy(25,10);
-        preto;
-        bbranco;
-        cout << " 1 - CADASTRAR FUNCIONARIOS ";
-
-        gotoxy(25,12);
-        preto;
-        bbranco;
-        cout << " 2 - CADASTRAR CLIENTES ";
-
-        cin >> opc;
-
-        switch(opc)
-        {
-        case 1:
-            cadFuncionario();
-            break;
-
-        case 2:
-            //cadastrarClientes();
-            break;
-
-        default:
-            cout << "NUMERO DIGITADO NAO ESTA COMPREENDIDO ENTRE AS OPCOES" << endl
-             << "TENTE NOVAMENTE" << endl;
-             cadastroDoAdmin();
-            }
-}
-
 void menu()
 {
-    int opc;
+    //int opc;
 
     tela();
 
@@ -176,48 +137,13 @@ void menu()
     bbranco;
     cout << " 4 - SAIR ";
 
-    for (int i = 0; i < 5; i++)
-    {
-        gotoxy(35+i,18);
-        bbranco;
-        nulo;
-    }
-    gotoxy(36,18);
-    preto;
-
-    cin >> opc;
-
-    switch(opc)
-    {
-    case 1:
-        //cadastraClientes();
-        break;
-
-    case 2:
-        //agendamento();
-        break;
-
-    case 3:
-        //buscaValor();
-        break;
-
-    case 4:
-        return 0;
-        break;
-
-    default:
-        cout << "NUMERO DIGITADO NAO ESTA COMPREENDIDO ENTRE AS OPCOES" << endl
-             << "TENTE NOVAMENTE" << endl;
-
-        menu();
-
-    }
+    getchar();
 
 }
 
 void menu2()
 {
-    int opc;
+    //int opc;
 
     tela();
 
@@ -229,63 +155,28 @@ void menu2()
     gotoxy(25,10);
     preto;
     bbranco;
-    cout << " 1 - CRIAR BASE DE DADOS ";
+    cout << " 1 - CADASTRAR ";
 
     gotoxy(25,12);
     preto;
     bbranco;
-    cout << " 2 - CADASTRAR ";
+    cout << " 2 - AGENDAMENTO ";
 
     gotoxy(25,14);
     preto;
     bbranco;
-    cout << " 3 - AGENDAMENTO ";
+    cout << " 3 - BUSCAR VALOR ";
 
     gotoxy(25,16);
     preto;
     bbranco;
-    cout << " 4 - BUSCAR VALOR ";
+    cout << " 4 - RELATORIO DE ATENDIMENTOS ";
 
     gotoxy(25,18);
     preto;
     bbranco;
-    cout << " 5 - RELATÓRIO DE ATENDIMENTOS "
+    cout << " 5 - SAIR ";
 
-         gotoxy(25,20);
-    preto;
-    bbranco;
-    cout << " 6 - SAIR ";
-
-    cin >> opc;
-
-    switch(opc)
-    {
-    case 1:
-        Cadastros();
-        break;
-
-    case 2:
-        cadastroDoAdmin();
-        break;
-
-    case 3:
-        //agendamento();
-        break;
-
-    case 4:
-        //buscaValor();
-        break;
-
-    case 5:
-        //relatorioAtendimento();
-        break;
-
-    default:
-        cout << "NUMERO DIGITADO NAO ESTA COMPREENDIDO ENTRE AS OPCOES" << endl
-             << "TENTE NOVAMENTE" << endl;
-
-        menu2();
-
-    }
+    getchar();
 
 }
