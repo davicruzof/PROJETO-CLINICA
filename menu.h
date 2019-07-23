@@ -7,6 +7,8 @@ using namespace std;
 
 const string usuario = "admin";
 const int password = 3284;
+const string usuarioio2 = "atendente";
+const int password2 = 8432;
 
 void menu();
 
@@ -18,7 +20,7 @@ void tela()
     {
         for(int j=0; j<80; j++)
         {
-            gotoxy(2+j,1+i);
+            gotoxy(2+j,2+i);
             azul;
             printf("\xdb");
         }
@@ -26,11 +28,11 @@ void tela()
 
     //BARRA PRETA
 
-    for(int i=0; i<29; i++)
+    for(int i=0; i<27; i++)
     {
         for(int j=0; j<45; j++)
         {
-            gotoxy(16+j,1+i);
+            gotoxy(16+j,3+i);
             preto;
             printf("\xdb");
         }
@@ -44,6 +46,10 @@ void login()
     string user;
 
     tela();
+
+    gotoxy(30,5);
+    branco;
+    cout << " SEJA BEM VINDO ";
 
     gotoxy(23,15);
     branco;
@@ -80,9 +86,13 @@ void login()
     vermelho;
     if (cin.get() == '\n')
     {
-        if(user == usuario && password == senha)
+        if(user == usuario && password == senha) // ADMIN
         {
             menu();
+        }
+        if(user == usuario2 && password2 == senha) //ATENDENTE
+        {
+
         }
         else
         {
