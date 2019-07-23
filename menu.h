@@ -5,16 +5,12 @@
 #include "cores.h"
 using namespace std;
 
-const string usuario = "admin";
-const int password = 3284;
-const string usuarioio2 = "atendente";
-const int password2 = 8432;
-
 void menu();
+void menu2();
 
 void tela()
 {
-    // tela
+
 
     for(int i=0; i<29; i++)
     {
@@ -41,8 +37,12 @@ void tela()
 
 void login()
 {
+    const string usuario = "admin";
+    const int password = 3284;
+    const string usuario2 = "atendente";
+    const int password2 = 8432;
     int senha;
-    char salvar;
+//    char salvar;
     string user;
 
     tela();
@@ -88,11 +88,11 @@ void login()
     {
         if(user == usuario && password == senha) // ADMIN
         {
-            menu();
+            menu2();
         }
         if(user == usuario2 && password2 == senha) //ATENDENTE
         {
-
+            menu();
         }
         else
         {
@@ -108,14 +108,14 @@ void login()
 
 void menu()
 {
-    int opc;
+    //int opc;
 
     tela();
 
-    gotoxy(35,3);
+    gotoxy(30,5);
     preto;
     bbranco;
-    cout << " MENU ";
+    cout << " MENU ATENDENTE ";
 
     gotoxy(25,10);
     preto;
@@ -133,6 +133,46 @@ void menu()
     cout << " 3 - BUSCAR VALOR ";
 
     gotoxy(25,16);
+    preto;
+    bbranco;
+    cout << " 4 - SAIR ";
+
+    getchar();
+
+}
+
+void menu2()
+{
+    //int opc;
+
+    tela();
+
+    gotoxy(30,5);
+    preto;
+    bbranco;
+    cout << " MENU ADMIN ";
+
+    gotoxy(25,10);
+    preto;
+    bbranco;
+    cout << " 1 - CADASTRAR ";
+
+    gotoxy(25,12);
+    preto;
+    bbranco;
+    cout << " 2 - AGENDAMENTO ";
+
+    gotoxy(25,14);
+    preto;
+    bbranco;
+    cout << " 3 - BUSCAR VALOR ";
+
+    gotoxy(25,16);
+    preto;
+    bbranco;
+    cout << " 4 - RELATORIO DE ATENDIMENTOS ";
+
+    gotoxy(25,18);
     preto;
     bbranco;
     cout << " 5 - SAIR ";
