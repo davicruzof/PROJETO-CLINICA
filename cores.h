@@ -5,5 +5,3 @@
 #define bpreto textbackground(BLACK)
 #define bbranco textbackground(WHITE)
 #define nulo cout << '\0'
-
-

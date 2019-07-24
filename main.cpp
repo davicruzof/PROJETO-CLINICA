@@ -1,10 +1,10 @@
 #include <iostream>
-#include "menu.h"
+#include "telalogin.h"
 
 using namespace std;
 
 int main()
 {
-    login();
+    telalogin();
     return 0;
 }
