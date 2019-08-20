@@ -1,0 +1,22 @@
+	  
+	 Help | Ajuda
+
+Nessa Tela Temos as Alternativas:
+
+1 - Cadastro de Clientes - nela e 
+possivel cadastrar clientes.
+
+2 - Agendamento - nessa opcao 
+voce pode realizar agendamento 
+de consultas.
+
+3 - Buscar Valor - aqui voce 
+pode buscar o valor de uma 
+consulta.
+
+5 - Fazer Logout - voce ira sair 
+desse usuario e vai voltar para 
+a tela de login
+
+6 - Encerrar o sistema- voce ira
+finalizar todo o sistema
