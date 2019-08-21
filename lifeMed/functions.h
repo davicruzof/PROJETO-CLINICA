@@ -42,7 +42,6 @@ struct clientes
     int mes;
     int ano;
     char sexo;
-    char endereco[100];
     char telefone[11];
 } cadC;
 
@@ -183,7 +182,7 @@ void menuAdmin()
         bvermelho;
         cout << " 2 - AGENDAMENTO ";
         Sleep(1500);
-        //agendamento();
+//      agendamento();
         break;
 
     case 3:
@@ -255,7 +254,7 @@ void menuMed()
         bvermelho;
         cout << " 1 - AGENDADOS ";
         Sleep(2000);
-        //cadastroDoAdmin();
+        cadastroDoAdmin();
         break;
 
     case 2:
@@ -381,25 +380,31 @@ void funcionarioCadastro()
         preto;
         cin >> cadF.dia;
 
-        for (int i = 0; i < 4; i++)
+        if(cadF.dia > 0)
         {
-            gotoxy(48+i,16);
-            bbranco;
-            nulo;
-        }
-        gotoxy(49,16);
-        preto;
-        cin >> cadF.mes;
+            for (int i = 0; i < 4; i++)
+            {
+                gotoxy(48+i,16);
+                bbranco;
+                nulo;
+            }
+            gotoxy(49,16);
+            preto;
+            cin >> cadF.mes;
 
-        for (int i = 0; i < 6; i++)
-        {
-            gotoxy(54+i,16);
-            bbranco;
-            nulo;
+            if(cadF.mes)
+            {
+                for (int i = 0; i < 6; i++)
+                {
+                    gotoxy(54+i,16);
+                    bbranco;
+                    nulo;
+                }
+                gotoxy(55,16);
+                preto;
+                cin >> cadF.ano;
+            }
         }
-        gotoxy(55,16);
-        preto;
-        cin >> cadF.ano;
 
         gotoxy(23,18);
         branco;
@@ -839,7 +844,7 @@ void cadastroClientes()
         gotoxy(30,5);
         branco;
         bpreto;
-        cout << " CADASTRO DE FUNCIONARIOS ";
+        cout << " CADASTRO DE PACIENTES ";
 
         gotoxy(23,8);
         branco;
@@ -877,27 +882,54 @@ void cadastroClientes()
         bpreto;
         cout<<" DATA DE NASCIMENTO ";
 
-        for (int i = 0; i < 4; i++)
+        int n=1;
+        do
         {
-            gotoxy(43+i,12);
-            bbranco;
-            nulo;
-        }
-        gotoxy(44,12);
-        preto;
-        cin>>cadC.dia ;
+            for (int i = 0; i < 4; i++)
+            {
+                gotoxy(43+i,12);
+                bbranco;
+                nulo;
+            }
+            gotoxy(44,12);
+            preto;
+            cin>>cadC.dia ;
 
-        for (int i = 0; i < 4; i++)
+            if(cadC.dia<0 || cadC.dia >31)
+            {
+                n++;
+            }
+            n--;
+        }
+        while(n>0);
+
+        n=1;
+
+        do
         {
-            gotoxy(48+i,12);
-            bbranco;
-            nulo;
-        }
-        gotoxy(49,12);
-        preto;
-        cin >> cadC.mes;
+            for (int i = 0; i < 4; i++)
+            {
+                gotoxy(48+i,12);
+                bbranco;
+                nulo;
+            }
+            gotoxy(49,12);
+            preto;
+            cin >> cadC.mes;
 
-        for (int i = 0; i < 4; i++)
+            if(cadC.mes<0 || cadC.mes > 12)
+            {
+                n++;
+            }
+            n--;
+        }
+        while(n>0);
+
+        n=1;
+
+        do
+        {
+            for (int i = 0; i < 4; i++)
         {
             gotoxy(53+i,12);
             bbranco;
@@ -906,6 +938,14 @@ void cadastroClientes()
         gotoxy(54,12);
         preto;
         cin >> cadC.ano;
+
+            if(cadC.ano<0 || cadC.ano < 1870)
+            {
+                n++;
+            }
+            n--;
+        }
+        while(n>0);
 
         gotoxy(23,14);
         branco;
@@ -942,7 +982,7 @@ void cadastroClientes()
         gotoxy(16,20);
         branco;
         bpreto;
-        cout << " DESEJA CADASTRAR OUTRO CLIENTE (S/N) ";
+        cout << " DESEJA CADASTRAR OUTRO PACIENTES (S/N) ";
 
         for (int i = 0; i < 3; i++)
         {
