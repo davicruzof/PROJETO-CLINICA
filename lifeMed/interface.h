@@ -1,10 +1,11 @@
 #define preto textcolor(BLACK)
 #define branco textcolor(WHITE)
 #define azul textcolor(LIGHTCYAN)
-#define bazul textbackground(LIGHTCYAN)
+#define bcyan textbackground(LIGHTCYAN)
 #define vermelho textcolor(LIGHTRED)
 #define bpreto textbackground(BLACK)
 #define bbranco textbackground(WHITE)
+#define bazul textbackground(BLUE)
 #define bvermelho textbackground(LIGHTRED)
 #define nulo cout << '\0'
 #include <conio2.h>
@@ -47,7 +48,7 @@ void tela()
 
     gotoxy(70,4);
     preto;
-    bazul;
+    bcyan;
     system ( "date /t" );
 }
 

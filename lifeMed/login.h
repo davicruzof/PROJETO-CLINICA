@@ -11,12 +11,7 @@ void login()
 
     ifstream busca("funcionarios.txt");
 
-    if(busca.fail())
-    {
-        exit(1);
-    }
-
-    char senha[50];
+    char senha[15];
     char user[50];
 
     tela();
@@ -62,17 +57,19 @@ void login()
     vermelho;
     if (cin.get() == '\n')
     {
-
-        busca.read((char *)(&cadF),sizeof(cadastroDeFuncionarios));
-
-        while(busca && !busca.eof())
+        if(busca.is_open())
         {
-            if((strcmp(user,cadF.nome) == 0 ) && (strcmp(senha,cadF.rg) == 0))
-            {
-                busca.close();
-                menuMed();
-            }
             busca.read((char *)(&cadF),sizeof(cadastroDeFuncionarios));
+
+            while(busca && !busca.eof())
+            {
+                if((strcmp(user,cadF.nome) == 0 ) && (strcmp(senha,cadF.rg) == 0)) // MEDICO
+                {
+                    busca.close();
+                    menuMed();
+                }
+                busca.read((char *)(&cadF),sizeof(cadastroDeFuncionarios));
+            }
         }
 
         if((strcmp(user,usuario) == 0 ) && (strcmp(senha,password) == 0))// ADMIN
