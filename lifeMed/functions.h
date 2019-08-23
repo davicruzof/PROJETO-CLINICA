@@ -7,7 +7,6 @@
 #include <windows.h>
 #include <stdio.h>
 #include <time.h>
-
 using namespace std;
 
 void funcionarioCadastro();
@@ -19,7 +18,8 @@ void valorAdmin();
 void valorAtendente();
 void help();
 void cadastroClientes();
-void buscaPaciente();
+void buscaPaciente(char* medico,char* crm,char* telefone);
+void receita(char* medico,char* crm,char* telefone);
 int idade(int dia,int mes, int ano);
 
 struct Data
@@ -266,16 +266,22 @@ void menuAdmin()
     }
 }
 
-void menuMed()
+void menuMed(char* medico, char* crm,char* telefone)
 {
     int opc=0;
 
     tela();
 
-    gotoxy(30,5);
+    gotoxy(25,5);
     preto;
     bbranco;
-    cout << " AREA DOS MEDICOS ";
+    cout << " DR. " << medico;
+
+
+    gotoxy(25,6);
+    branco;
+    bvermelho;
+    cout << " CRM " << crm;
 
     gotoxy(20,10);
     preto;
@@ -290,12 +296,17 @@ void menuMed()
     gotoxy(20,14);
     preto;
     bbranco;
-    cout << " 3 - FAZER LOGOFF ";
+    cout << " 3 - GERAR RECEITA ";
 
     gotoxy(20,16);
     preto;
     bbranco;
-    cout << " 4 - ENCERRAR O SISTEMA ";
+    cout << " 4 - FAZER LOGOFF ";
+
+    gotoxy(20,18);
+    preto;
+    bbranco;
+    cout << " 5 - ENCERRAR O SISTEMA ";
 
     for (int i = 0; i < 5; i++)
     {
@@ -315,7 +326,8 @@ void menuMed()
         branco;
         bvermelho;
         cout << " 1 - AGENDADOS ";
-        Sleep(2000);
+        limpaHelp();
+        Sleep(1500);
         break;
 
     case 2:
@@ -323,23 +335,37 @@ void menuMed()
         branco;
         bvermelho;
         cout << " 2 - BUSCAR DADOS DO PACIENTE ";
-        buscaPaciente();
-        Sleep(2000);
+        limpaHelp();
+        buscaPaciente(medico,crm,telefone);
+        Sleep(1500);
         break;
 
     case 3:
-        gotoxy(20,12);
+        gotoxy(20,14);
         branco;
         bvermelho;
-        cout << " 3 - FAZER LOGOFF  ";
-        login();
+        cout << " 3 - GERAR RECEITA ";
+        limpaHelp();
+        Sleep(1500);
+        receita(medico,crm,telefone);
         break;
 
     case 4:
         gotoxy(20,16);
         branco;
         bvermelho;
-        cout << " 4 - ENCERRAR O SISTEMA ";
+        cout << " 4 - FAZER LOGOFF  ";
+        limpaHelp();
+        Sleep(1500);
+        login();
+        break;
+
+    case 5:
+        gotoxy(20,18);
+        branco;
+        bvermelho;
+        cout << " 5 - ENCERRAR O SISTEMA ";
+        limpaHelp();
         Sleep(1500);
         system("cls");
         exit(1);
@@ -349,11 +375,12 @@ void menuMed()
         branco;
         bvermelho;
         cout << " OPCAO INVALIDA ";
+        limpaHelp();
         Sleep(2000);
-        menuMed();
+        menuMed(medico,crm,telefone);
         break;
     }
-    menuMed();
+    menuMed(medico,crm,telefone);
 }
 
 void funcionarioCadastro()
@@ -925,7 +952,6 @@ void valorAtendente()
 
 }
 
-
 void menuAtendente()
 {
 
@@ -1064,7 +1090,6 @@ void help()
     getchar();
     menuAtendente();
 }
-
 
 void cadastroClientes()
 {
@@ -1279,54 +1304,54 @@ void cadastroClientes()
             cout << " \xc ";
         }
 
-            gotoxy(18,16);
-            branco;
-            bpreto;
-            cout<<" TELEFONE ";
+        gotoxy(18,16);
+        branco;
+        bpreto;
+        cout<<" TELEFONE ";
 
-            n=1;
-            do
+        n=1;
+        do
+        {
+            for (int i = 0; i < 15; i++)
             {
-                for (int i = 0; i < 15; i++)
-                {
-                    gotoxy(30+i,16);
-                    bbranco;
-                    nulo;
-                }
-                gotoxy(31,16);
-                preto;
-                cin >> cadC.telefone;
-
-                x = 0;
-
-                x = strlen(cadC.telefone);
-
-                if(x > 11 || x < 11)
-                {
-                    n++;
-                }
-                n--;
-            }
-            while(n>0);
-
-            cadastro.write((const char*)(&cadC),sizeof(clientes));
-
-            gotoxy(16,20);
-            branco;
-            bpreto;
-            cout << " DESEJA CADASTRAR OUTRO PACIENTES (S/N) ";
-
-            for (int i = 0; i < 3; i++)
-            {
-                gotoxy(56+i,20);
+                gotoxy(30+i,16);
                 bbranco;
                 nulo;
             }
-            gotoxy(58,20);
+            gotoxy(31,16);
             preto;
-            cin >> op;
+            cin >> cadC.telefone;
 
+            x = 0;
+
+            x = strlen(cadC.telefone);
+
+            if(x > 11 || x < 11)
+            {
+                n++;
+            }
+            n--;
         }
+        while(n>0);
+
+        cadastro.write((const char*)(&cadC),sizeof(clientes));
+
+        gotoxy(16,20);
+        branco;
+        bpreto;
+        cout << " DESEJA CADASTRAR OUTRO PACIENTES (S/N) ";
+
+        for (int i = 0; i < 3; i++)
+        {
+            gotoxy(56+i,20);
+            bbranco;
+            nulo;
+        }
+        gotoxy(58,20);
+        preto;
+        cin >> op;
+
+    }
     while( op == 'S' || op == 's');
 
     cadastro.close();
@@ -1336,8 +1361,7 @@ void cadastroClientes()
 
 }
 
-
-void buscaPaciente()
+void buscaPaciente(char* medico, char* crm,char* telefone)
 {
     ifstream buscaCliente("clientes.txt");
 
@@ -1436,20 +1460,20 @@ void buscaPaciente()
             bbranco;
             cout << cadC.sexo;
             if(strcmp(cadC.sexo,"masculino") == 0 || strcmp(cadC.sexo,"M") == 0 || strcmp(cadC.sexo,"m") == 0 )
-        {
-            gotoxy(43,14);
-            branco;
-            bazul;
-            cout << " \xb ";
-        }
+            {
+                gotoxy(43,14);
+                branco;
+                bazul;
+                cout << " \xb ";
+            }
 
-        if(strcmp(cadC.sexo,"feminino") == 0 || strcmp(cadC.sexo,"F") == 0 || strcmp(cadC.sexo,"f") == 0 )
-        {
-            gotoxy(43,14);
-            branco;
-            bvermelho;
-            cout << " \xc ";
-        }
+            if(strcmp(cadC.sexo,"feminino") == 0 || strcmp(cadC.sexo,"F") == 0 || strcmp(cadC.sexo,"f") == 0 )
+            {
+                gotoxy(43,14);
+                branco;
+                bvermelho;
+                cout << " \xc ";
+            }
             gotoxy(23,16);
             branco;
             bpreto;
@@ -1472,7 +1496,7 @@ void buscaPaciente()
     }
 
     getchar();
-    menuMed();
+    menuMed(medico,crm,telefone);
 
 }
 
@@ -1514,4 +1538,158 @@ int idade(int dia,int mes, int ano)
         }
     }
 
+}
+
+void receita(char* medico,char* crm,char* telefone)
+{
+    ifstream paciente("clientes.txt");
+
+    char nome[50],cpf[12],remedio[50];
+    int n=1,x=0;
+
+    char dateStr[9];
+
+    _strdate(dateStr);
+
+    Data atual;
+
+    ParseData(dateStr, &atual);
+
+    tela();
+
+    gotoxy(30,5);
+    branco;
+    bpreto;
+    cout << " GERAR RECEITUARIO ";
+
+    gotoxy(18,8);
+    branco;
+    bpreto;
+    cout<<" INFORME O NOME DO PACIENTE ";
+
+    do
+    {
+        for (int i = 0; i < 30; i++)
+        {
+            gotoxy(18+i,10);
+            bbranco;
+            nulo;
+        }
+        gotoxy(19,10);
+        preto;
+        fflush(stdin);
+        cin.getline(nome,50);
+
+        x = strlen(nome);
+
+        if(x > 50)
+        {
+            n++;
+        }
+        n--;
+    }
+    while(n>0);
+
+    gotoxy(18,12);
+    branco;
+    bpreto;
+    cout<<" INFORME O CPF ";
+
+    n=1;
+    do
+    {
+        for (int i = 0; i < 15; i++)
+        {
+            gotoxy(18+i,14);
+            bbranco;
+            nulo;
+        }
+        gotoxy(19,14);
+        preto;
+        cin >> cpf;
+        x = 0;
+
+        x = strlen(cpf);
+
+        if(x > 11 || x < 11)
+        {
+            n++;
+        }
+        n--;
+    }
+    while(n>0);
+
+    paciente.read((char *)(&cadC),sizeof(clientes));
+
+    while(!paciente.eof())
+    {
+        if((strcmp(nome,cadC.nome) == 0 ) && (strcmp(cpf,cadC.cpf) == 0))
+        {
+            char arq[15];
+            sprintf(arq,"%s.txt",cpf);
+
+            ofstream receituario(arq,ios::app);
+
+            receituario << "\n\t\t LIFEMED \n"
+                        << "\t\t RECEITUARIO \n\n"
+                        << "\t PACIENTE: " << cadC.nome << "\n"
+                        << "\t SEXO: " << cadC.sexo << "\t" << " IDADE: " << idade(cadC.dia,cadC.mes,cadC.ano) << "\n\n\n\n\n\n";
+
+            int z;
+            gotoxy(18,16);
+            preto;
+            bbranco;
+            cout << " INFORME A QUANTIDADE DE MEDICAMENTOS ";
+            for (int i = 0; i < 3; i++)
+            {
+                gotoxy(58+i,16);
+                bbranco;
+                nulo;
+            }
+            gotoxy(59,16);
+            preto;
+            cin >> z;
+            gotoxy(18,18);
+            preto;
+            bbranco;
+            cout << " INFORME OS MEDICAMENTOS ";
+            for(int j=1; j<=z; j++)
+            {
+                for (int i = 0; i < 15; i++)
+                {
+                    gotoxy(18+i,19+j);
+                    bbranco;
+                    nulo;
+                }
+                gotoxy(19,19+j);
+                preto;
+                fflush(stdin);
+                cin.getline(remedio,50);
+                receituario << " - " << remedio << "\n";
+            }
+            receituario << "\n\n\n\n\n Dr. " << medico << "\n"
+                        << " CRM: " << crm << "\n"
+                        << " TELEFONE: " << telefone << "\n"
+                        << " DATA: " << atual.dia << " / " << atual.mes << " / " << atual.ano;
+            receituario.close();
+
+            string aux;
+            int i=0;
+            ifstream receita(arq);
+            telaHelp();
+            while(!receita.eof())
+            {
+                getline(receita,aux);
+                gotoxy(84,2+i);
+                preto;
+                bbranco;
+                cout << aux;
+                i++;
+
+            }
+            system(arq);
+        }
+        paciente.read((char *)(&cadC),sizeof(clientes));
+    }
+    menuMed(medico,crm,telefone);
 }
