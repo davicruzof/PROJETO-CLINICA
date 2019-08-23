@@ -1445,7 +1445,6 @@ void buscaPaciente(char* medico, char* crm,char* telefone)
         }
         buscaCliente.read((char *)(&cadC),sizeof(clientes));
     }
-
     getchar();
     menuMed(medico,crm,telefone);
 

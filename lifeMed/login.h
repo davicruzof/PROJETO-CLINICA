@@ -66,7 +66,7 @@ void login()
                 if((strcmp(user,cadF.nome) == 0 ) && (strcmp(senha,cadF.rg) == 0)) // MEDICO
                 {
                     busca.close();
-                    menuMed();
+                    menuMed(user,cadF.crm,cadF.telefone);
                 }
                 busca.read((char *)(&cadF),sizeof(cadastroDeFuncionarios));
             }

@@ -4,7 +4,6 @@ using namespace std;
 
 int main()
 {
-   login();
-   //exibir();
+    login();
     return 0;
 }
