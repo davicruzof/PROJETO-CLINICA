@@ -1438,59 +1438,10 @@ void buscaPaciente(char* medico, char* crm,char* telefone)
     {
         if((strcmp(nome,cadC.nome) == 0 ) && (strcmp(cpf,cadC.cpf) == 0))
         {
-            tela();
-            gotoxy(30,5);
-            branco;
-            bpreto;
-            cout << " DADOS DE PACIENTES ";
-            gotoxy(23,12);
-            branco;
-            bpreto;
-            cout <<" NOME DO PACIENTE ";
-            gotoxy(43,12);
-            preto;
-            bbranco;
-            cout << cadC.nome;
-            gotoxy(23,14);
-            branco;
-            bpreto;
-            cout <<" SEXO ";
-            gotoxy(31,14);
-            preto;
-            bbranco;
-            cout << cadC.sexo;
-            if(strcmp(cadC.sexo,"masculino") == 0 || strcmp(cadC.sexo,"M") == 0 || strcmp(cadC.sexo,"m") == 0 )
-            {
-                gotoxy(43,14);
-                branco;
-                bazul;
-                cout << " \xb ";
-            }
-
-            if(strcmp(cadC.sexo,"feminino") == 0 || strcmp(cadC.sexo,"F") == 0 || strcmp(cadC.sexo,"f") == 0 )
-            {
-                gotoxy(43,14);
-                branco;
-                bvermelho;
-                cout << " \xc ";
-            }
-            gotoxy(23,16);
-            branco;
-            bpreto;
-            cout<<" IDADE " ;
-            gotoxy(32,16);
-            preto;
-            bbranco;
-            cout << idade(cadC.dia,cadC.mes,cadC.ano);
-            gotoxy(23,18);
-            branco;
-            bpreto;
-            cout <<" TELEFONE " ;
-            gotoxy(35,18);
-            preto;
-            bbranco;
-            cout << cadC.telefone;
-
+            char arq[15];
+            sprintf(arq,"%s.txt",cpf);
+            ifstream arquivo(arq);
+            system(arq);
         }
         buscaCliente.read((char *)(&cadC),sizeof(clientes));
     }
