@@ -1,3 +1,5 @@
+#include <conio2.h>
+#include <stdio.h>
 #define preto textcolor(BLACK)
 #define branco textcolor(WHITE)
 #define azul textcolor(LIGHTCYAN)
@@ -8,8 +10,6 @@
 #define bazul textbackground(BLUE)
 #define bvermelho textbackground(LIGHTRED)
 #define nulo cout << '\0'
-#include <conio2.h>
-#include <stdio.h>
 
 void limpaHelp()
 {
@@ -64,3 +64,68 @@ void telaHelp()
         }
     }
 }
+
+namespace data
+{
+struct Data
+{
+    int dia;
+    int mes;
+    int ano;
+};
+
+void ParseData(char str[9], Data *Alvo)
+{
+    char _dia[3] =
+    {
+        str[3],
+        str[4],
+        0
+    };
+    char _mes[3] =
+    {
+        str[0],
+        str[1],
+        0
+    };
+    char _ano[3] =
+    {
+        str[6],
+        str[7],
+        0
+    };
+    Alvo->dia = atoi(_dia);
+    Alvo->mes = atoi(_mes);
+    Alvo->ano = atoi(_ano);
+    return;
+}
+}
+
+namespace cadastros
+{
+struct cadastroDeFuncionarios
+{
+    char nome[50];
+    char sexo[20];
+    char telefone[11];
+    int dia,mes,ano;
+    char cargo[50];
+    char cpf[12];
+    char rg[15];
+    char crm[7];
+    float valorConsulta;
+} cadF;
+
+struct clientes
+{
+    char nome[50];
+    char cpf[12];
+    int dia;
+    int mes;
+    int ano;
+    char sexo[20];
+    char telefone[11];
+} cadC;
+}
+
+
