@@ -1452,6 +1452,11 @@ void receita(char* medico,char* crm,char* telefone)
 
     ParseData(dateStr, &atual);
 
+    int ano = atual.ano + 2000;
+    int dia = atual.dia;
+    int mes = atual.mes;
+
+
     tela();
 
     gotoxy(30,5);
@@ -1567,7 +1572,7 @@ void receita(char* medico,char* crm,char* telefone)
             receituario << "\n\n\n\n\n Dr. " << medico << "\n"
                         << " CRM: " << crm << "\n"
                         << " TELEFONE: " << telefone << "\n"
-                        << " DATA: " << atual.dia << " / " << atual.mes << " / " << atual.ano;
+                        << " DATA: " << dia << " / 0" << mes << " / " << ano+2000;
             receituario.close();
 
             string aux;
