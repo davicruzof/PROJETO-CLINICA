@@ -1,5 +1,6 @@
 #include <conio2.h>
 #include <stdio.h>
+#include<windows.h>
 #define preto textcolor(BLACK)
 #define branco textcolor(WHITE)
 #define azul textcolor(LIGHTCYAN)
@@ -113,6 +114,7 @@ struct cadastroDeFuncionarios
     char cpf[12];
     char rg[15];
     char crm[7];
+    int codigo;
     float valorConsulta;
 } cadF;
 

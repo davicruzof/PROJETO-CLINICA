@@ -11,23 +11,29 @@
 using namespace std;
 using namespace data;
 using namespace cadastros;
+typedef cadastroDeFuncionarios* CadP;
 
-void funcionarioCadastro();
-void menuAdmin();
+void funcionarioCadastro(int acesso);
+void menuAdmin(int acesso);
 void valor();
-void login();
-void menuAtendente();
-void valorAdmin();
-void valorAtendente();
-void help();
-void cadastroClientes();
-void buscaPaciente(char* medico,char* crm,char* telefone);
-void receita(char* medico,char* crm,char* telefone);
+void login(int acesso);
+void menuAtendente(int acesso);
+void valorAdmin(int acesso);
+void valorAtendente(int acesso);
+void help(int acesso);
+void cadastroClientes(int acesso);
+void buscaPaciente(char* medico,char* crm,char* telefone,int acesso);
+void receita(char* medico,char* crm,char* telefone,int acesso);
 int idade(int dia,int mes, int ano);
 void zero();
+void Menualterar(int acesso);
+void abreFecha(int acesso);
+int number_func();
+void ExibirFuncionario(int acesso);
+void RemoverFunc(CadP cadastro,int acesso);
 
 
-void cadastroDoAdmin()
+void cadastroDoAdmin(int acesso)
 {
     int opc=0;
 
@@ -77,7 +83,7 @@ void cadastroDoAdmin()
         bvermelho;
         cout << " 1 - CADASTRAR FUNCIONARIOS ";
         Sleep(1500);
-        funcionarioCadastro();
+        funcionarioCadastro(acesso);
         break;
 
     case 2:
@@ -86,13 +92,14 @@ void cadastroDoAdmin()
         bvermelho;
         cout << " 2 - CADASTRAR CLIENTES ";
         Sleep(1500);
-        cadastroClientes();
+        cadastroClientes(acesso);
         break;
     case 3:
         gotoxy(20,14);
         branco;
         bvermelho;
-        cout << " 3 - ALTERAR CADASTRO DE FUNCIONARIOS ";
+        cout << " 3 - REMOVER CADASTRO DE FUNCIONARIOS ";
+        ExibirFuncionario(acesso);
         Sleep(1500);
         break;
     case 4:
@@ -101,7 +108,7 @@ void cadastroDoAdmin()
         bvermelho;
         cout << " 4 - VOLTAR PARA O MENU ADMIN";
         Sleep(1500);
-        menuAdmin();
+        menuAdmin(acesso);
         break;
     default:
         gotoxy(25,27);
@@ -109,13 +116,13 @@ void cadastroDoAdmin()
         bvermelho;
         cout << " OPCAO INVALIDA ";
         Sleep(2000);
-        cadastroDoAdmin();
+        cadastroDoAdmin(acesso);
         break;
     }
-    cadastroDoAdmin();
+    cadastroDoAdmin(acesso);
 }
 
-void menuAdmin()
+void menuAdmin(int acesso)
 {
     int opc=0;
 
@@ -170,7 +177,7 @@ void menuAdmin()
         bvermelho;
         cout << " 1 - CADASTRAR ";
         Sleep(1500);
-        cadastroDoAdmin();
+        cadastroDoAdmin(acesso);
         break;
 
     case 2:
@@ -188,7 +195,7 @@ void menuAdmin()
         bvermelho;
         cout << " 3 - BUSCAR VALOR ";
         Sleep(1500);
-        valorAdmin();
+        valorAdmin(acesso);
         break;
 
     case 4:
@@ -197,7 +204,7 @@ void menuAdmin()
         bvermelho;
         cout << " 4 - FAZER LOGOFF ";
         Sleep(1500);
-        login();
+        login(acesso);
         break;
 
     case 5:
@@ -210,12 +217,12 @@ void menuAdmin()
         bvermelho;
         cout << " OPCAO INVALIDA ";
         Sleep(2000);
-        menuAdmin();
+        menuAdmin(acesso);
         break;
     }
 }
 
-void menuMed(char* medico, char* crm,char* telefone)
+void menuMed(char* medico, char* crm,char* telefone,int acesso)
 {
     int opc=0;
 
@@ -285,7 +292,7 @@ void menuMed(char* medico, char* crm,char* telefone)
         bvermelho;
         cout << " 2 - BUSCAR DADOS DO PACIENTE ";
         limpaHelp();
-        buscaPaciente(medico,crm,telefone);
+        buscaPaciente(medico,crm,telefone,acesso);
         Sleep(1500);
         break;
 
@@ -296,7 +303,7 @@ void menuMed(char* medico, char* crm,char* telefone)
         cout << " 3 - GERAR RECEITA ";
         limpaHelp();
         Sleep(1500);
-        receita(medico,crm,telefone);
+        receita(medico,crm,telefone,acesso);
         break;
 
     case 4:
@@ -306,7 +313,7 @@ void menuMed(char* medico, char* crm,char* telefone)
         cout << " 4 - FAZER LOGOFF  ";
         limpaHelp();
         Sleep(1500);
-        login();
+        login(acesso);
         break;
 
     case 5:
@@ -326,13 +333,13 @@ void menuMed(char* medico, char* crm,char* telefone)
         cout << " OPCAO INVALIDA ";
         limpaHelp();
         Sleep(2000);
-        menuMed(medico,crm,telefone);
+        menuMed(medico,crm,telefone,acesso);
         break;
     }
-    menuMed(medico,crm,telefone);
+    menuMed(medico,crm,telefone,acesso);
 }
 
-void funcionarioCadastro()
+void funcionarioCadastro(int acesso)
 {
     char novoCad;
     int n=1,x=0;
@@ -707,12 +714,12 @@ void funcionarioCadastro()
 
     cadastroFuncionario.close();
 
-    menuAdmin();
+    menuAdmin(acesso);
 
 
 }
 
-void valorAdmin()
+void valorAdmin(int acesso)
 {
 
     char especialidade[50];
@@ -802,11 +809,11 @@ void valorAdmin()
     }
     while(opc == 's' || opc == 'S');
 
-    menuAdmin();
+    menuAdmin(acesso);
 
 }
 
-void valorAtendente()
+void valorAtendente(int acesso)
 {
 
     char especialidade[50];
@@ -897,11 +904,11 @@ void valorAtendente()
     }
     while(opc == 's' || opc == 'S');
 
-    menuAtendente();
+    menuAtendente(acesso);
 
 }
 
-void menuAtendente()
+void menuAtendente(int acesso)
 {
 
     int opc=0;
@@ -963,7 +970,7 @@ void menuAtendente()
         cout << " 1 - CADASTRAR CLIENTES ";
         Sleep(1500);
         limpaHelp();
-        cadastroClientes();
+        cadastroClientes(acesso);
         break;
 
     case 2:
@@ -982,7 +989,7 @@ void menuAtendente()
         cout << " 3 - BUSCAR VALOR ";
         Sleep(1500);
         limpaHelp();
-        valorAtendente();
+        valorAtendente(acesso);
         break;
 
     case 4:
@@ -992,7 +999,7 @@ void menuAtendente()
         cout << " 4 - Help | AJUDA ";
         Sleep(1500);
         telaHelp();
-        help();
+        help(acesso);
         break;
 
     case 5:
@@ -1002,7 +1009,7 @@ void menuAtendente()
         cout << " 5 - FAZER LOGOUT ";
         Sleep(1500);
         limpaHelp();
-        login();
+        login(acesso);
         break;
     case 6:
         gotoxy(25,20);
@@ -1014,10 +1021,10 @@ void menuAtendente()
         exit(1);
         break;
     }
-    menuAtendente();
+    menuAtendente(acesso);
 }
 
-void help()
+void help(int acesso)
 {
 
     string aux;
@@ -1037,10 +1044,10 @@ void help()
     }
     help.close();
     getchar();
-    menuAtendente();
+    menuAtendente(acesso);
 }
 
-void cadastroClientes()
+void cadastroClientes(int acesso)
 {
     char op;
 
@@ -1305,12 +1312,12 @@ void cadastroClientes()
 
     cadastro.close();
 
-    menuAtendente();
+    menuAtendente(acesso);
 
 
 }
 
-void buscaPaciente(char* medico, char* crm,char* telefone)
+void buscaPaciente(char* medico, char* crm,char* telefone,int acesso)
 {
     ifstream buscaCliente("clientes.txt");
 
@@ -1395,7 +1402,7 @@ void buscaPaciente(char* medico, char* crm,char* telefone)
         buscaCliente.read((char *)(&cadC),sizeof(clientes));
     }
     getchar();
-    menuMed(medico,crm,telefone);
+    menuMed(medico,crm,telefone,acesso);
 
 }
 
@@ -1439,7 +1446,7 @@ int idade(int dia,int mes, int ano)
 
 }
 
-void receita(char* medico,char* crm,char* telefone)
+void receita(char* medico,char* crm,char* telefone,int acesso)
 {
     ifstream paciente("clientes.txt");
 
@@ -1595,5 +1602,169 @@ void receita(char* medico,char* crm,char* telefone)
         }
         paciente.read((char *)(&cadC),sizeof(clientes));
     }
-    menuMed(medico,crm,telefone);
+    menuMed(medico,crm,telefone,acesso);
+}
+
+void Menualterar(int acesso)
+{
+    int opcao;
+
+    tela();
+    gotoxy(30,5);
+    branco;
+    bpreto;
+    cout << "REMOCAO DE CADASTRO";
+
+    gotoxy(23,8);
+    preto;
+    bbranco;
+    cout << "1. FUNCIONARIOS";
+    gotoxy(23,10);
+    preto;
+    bbranco;
+    cout << "2. VOLTAR";
+
+    gotoxy(23,14);
+    preto;
+    bbranco;
+    cout << "INFORME A OPCAO ";
+    for (int i=0; i<3; i++)
+    {
+        gotoxy(40+i,14);
+        bbranco;
+        nulo;
+    }
+    gotoxy(41,14);
+    preto;
+    cin >> opcao;
+
+    switch(opcao)
+    {
+        case 1:
+            ExibirFuncionario(acesso);
+            break;
+
+        case 2:
+            cadastroDoAdmin(acesso);
+            break;
+    }
+}
+
+int number_func(){
+    ifstream directory("funcionarios.txt", ios::in);
+    int counter=0;
+    cadastroDeFuncionarios aux;
+    directory.read((char*)(&aux), sizeof(cadastroDeFuncionarios));
+     while(!directory.eof()){
+            gotoxy(84,4+counter);
+            preto;
+            bbranco;
+            directory.read((char*)(&aux), sizeof(cadastroDeFuncionarios));
+            counter++;
+     }
+     directory.close();
+    return counter;
+
+}
+void ExibirFuncionario(int acesso)
+{
+    int qtd = number_func();
+    ifstream directory("funcionarios.txt", ios::in);
+    int i=0;
+
+    telaHelp();
+    gotoxy(84,2+i);
+    preto;
+    bbranco;
+    cout << "MEDICOS CADASTRADOS: " << endl << endl;
+    CadP cadastro =  new cadastroDeFuncionarios[qtd];
+    directory.read((char*)(&*(cadastro+i)), sizeof(cadastroDeFuncionarios));
+     while(!directory.eof()){
+        gotoxy(84,4+i);
+        preto;
+        bbranco;
+        cout << cadastro[i].nome << endl;
+        i++;
+        directory.read((char*)(&*(cadastro+i)), sizeof(cadastroDeFuncionarios));
+     }
+    directory.close();
+    RemoverFunc(cadastro,acesso);
+}
+
+void abreFecha(int acesso){
+    ofstream directory("funcionarios.txt");
+    directory.close();
+}
+
+void RemoverFunc(CadP cadastro,int acesso)
+{
+    int opcao;
+    char nome[80];
+    tela();
+    gotoxy(30,5);
+    branco;
+    bpreto;
+    cout << "REMOCAO DE CADASTRO";
+    gotoxy(23,8);
+    preto;
+    bbranco;
+    cout << "NOME DO MEDICO";
+    for (int i=0; i<20; i++)
+    {
+        gotoxy(39+i,8);
+        bbranco;
+        nulo;
+    }
+    gotoxy(40,8);
+    preto;
+    fflush(stdin);
+    cin.getline(nome, 80);
+
+    for (int i=0; i<number_func(); i++)
+    {
+        if (strcmp(nome,cadastro[i].nome)==0)
+        {
+            gotoxy(26,11);
+            preto;
+            bbranco;
+            cout << "DESEJA REALMENTE REMOVER?";
+            gotoxy(28,13);
+            preto;
+            bbranco;
+            cout << "1 - SIM";
+            gotoxy(41,13);
+            preto;
+            bbranco;
+            cout << "2 - NAO";
+            for (int k=0; k<3; k++)
+            {
+                gotoxy(35+k,15);
+                bbranco;
+                nulo;
+            }
+            gotoxy(36,15);
+            preto;
+            cin >> opcao;
+            if(opcao == 1)
+            {
+                cadastro[i].codigo = 1;
+                int recebe = number_func();
+                abreFecha(acesso);
+
+                ofstream directory("funcionarios.txt", ios::out | ios::app);
+
+                for(int j = 0; j<recebe; j++)
+                {
+                    if(cadastro[j].codigo!= 1)
+                    {
+                        directory.write((const char*)(&cadastro[j]), sizeof(cadastroDeFuncionarios));
+                    }
+                }
+                directory.close();
+            }
+            else
+                Menualterar(acesso);
+        }
+    }
+    ExibirFuncionario(acesso);
 }

@@ -4,6 +4,7 @@ using namespace std;
 
 int main()
 {
-    login();
+   int acesso = 2;
+    login(acesso);
     return 0;
 }
