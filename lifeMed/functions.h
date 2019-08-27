@@ -41,27 +41,22 @@ void cadastroDoAdmin()
     gotoxy(20,10);
     preto;
     bbranco;
-    cout << " 1 - INCIALIZAR aRQUIVOS PARA CADASTROS ";
+    cout << " 1 - CADASTRAR FUNCIONARIOS ";
 
     gotoxy(20,12);
     preto;
     bbranco;
-    cout << " 2 - CADASTRAR FUNCIONARIOS ";
+    cout << " 2 - CADASTRAR CLIENTES ";
 
     gotoxy(20,14);
     preto;
     bbranco;
-    cout << " 3 - CADASTRAR CLIENTES ";
+    cout << " 3 - ALTERAR CADASTRO DE FUNCIONARIOS ";
 
     gotoxy(20,16);
     preto;
     bbranco;
-    cout << " 4 - ALTERAR CADASTRO DE FUNCIONARIOS ";
-
-    gotoxy(20,18);
-    preto;
-    bbranco;
-    cout << " 5 - VOLTAR PARA O MENU ADMIN";
+    cout << " 4 - VOLTAR PARA O MENU ADMIN";
 
     for (int i = 0; i < 5; i++)
     {
@@ -80,36 +75,28 @@ void cadastroDoAdmin()
         gotoxy(20,10);
         branco;
         bvermelho;
-        cout << " 1 - INCIALIZAR aRQUIVOS PARA CADASTROS ";
-        Sleep(1500);
-        zero();
-        break;
-case 2:
-        gotoxy(20,12);
-        branco;
-        bvermelho;
-        cout << " 2 - CADASTRAR FUNCIONARIOS ";
+        cout << " 1 - CADASTRAR FUNCIONARIOS ";
         Sleep(1500);
         funcionarioCadastro();
         break;
 
-    case 3:
-        gotoxy(20,14);
+    case 2:
+        gotoxy(20,12);
         branco;
         bvermelho;
         cout << " 2 - CADASTRAR CLIENTES ";
         Sleep(1500);
         cadastroClientes();
         break;
-    case 4:
-        gotoxy(20,16);
+    case 3:
+        gotoxy(20,14);
         branco;
         bvermelho;
         cout << " 3 - ALTERAR CADASTRO DE FUNCIONARIOS ";
         Sleep(1500);
         break;
-    case 5:
-        gotoxy(20,18);
+    case 4:
+        gotoxy(20,16);
         branco;
         bvermelho;
         cout << " 4 - VOLTAR PARA O MENU ADMIN";
@@ -125,6 +112,7 @@ case 2:
         cadastroDoAdmin();
         break;
     }
+    cadastroDoAdmin();
 }
 
 void menuAdmin()
@@ -512,7 +500,7 @@ void funcionarioCadastro()
             gotoxy(41,16);
             preto;
             cin >> cadF.dia;
-            if(cadF.dia<0 || cadF.dia >31)
+            if(cadF.dia<1 || cadF.dia >31)
             {
                 n++;
             }
@@ -547,7 +535,7 @@ void funcionarioCadastro()
             }
             else
             {
-                if(cadF.mes < 0 || cadF.mes > 12 )
+                if(cadF.mes < 1 || cadF.mes > 12 )
                 {
                     n++;
                 }
@@ -1153,7 +1141,7 @@ void cadastroClientes()
             preto;
             cin>>cadC.dia ;
 
-            if(cadC.dia < 0 || cadC.dia > 31)
+            if(cadC.dia < 1 || cadC.dia > 31)
             {
                 n++;
             }
@@ -1189,7 +1177,7 @@ void cadastroClientes()
             }
             else
             {
-                if(cadC.mes < 0 || cadC.mes > 12)
+                if(cadC.mes < 1 || cadC.mes > 12)
                 {
                     n++;
                 }
@@ -1608,27 +1596,4 @@ void receita(char* medico,char* crm,char* telefone)
         paciente.read((char *)(&cadC),sizeof(clientes));
     }
     menuMed(medico,crm,telefone);
-}
-
-void zero(){
-
-   ofstream inicioF("funcionarios.txt");
-   ofstream inicioP("clientes.txt");
-
-   cadastroDeFuncionarios fzero = {" "," "," ",0,0,0," "," "," "," ",0.0};
-   clientes pzero = {" "," ",0,0,0, " "," "};
-
-   for (int i=0; i<100; i++)
-    {
-        inicioF.write((const char *)(&fzero),sizeof(cadastroDeFuncionarios)); // ESCREVENDO FUNCIONARIO VAZIOS
-    }
-
-    for (int i=0; i<1000; i++)
-    {
-        inicioP.write((const char *)(&pzero),sizeof(clientes)); // ESCREVENDO PACIENTES VAZIOS
-    }
-
-    inicioF.close( );
-    inicioP.close( );
-
 }
