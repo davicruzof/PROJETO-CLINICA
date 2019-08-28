@@ -13,6 +13,7 @@ using namespace data;
 using namespace cadastros;
 typedef cadastroDeFuncionarios* CadP;
 
+void agendamento(int acesso);
 void funcionarioCadastro(int acesso);
 void menuAdmin(int acesso);
 void valor();
@@ -21,6 +22,7 @@ void menuAtendente(int acesso);
 void valorAdmin(int acesso);
 void valorAtendente(int acesso);
 void help(int acesso);
+void agendamentoPacientes(char * crm);
 void cadastroClientes(int acesso);
 void buscaPaciente(char* medico,char* crm,char* telefone,int acesso);
 void receita(char* medico,char* crm,char* telefone,int acesso);
@@ -186,7 +188,7 @@ void menuAdmin(int acesso)
         bvermelho;
         cout << " 2 - AGENDAMENTO ";
         Sleep(1500);
-//      agendamento();
+        agendamento(acesso);
         break;
 
     case 3:
@@ -199,7 +201,7 @@ void menuAdmin(int acesso)
         break;
 
     case 4:
-        gotoxy(25,14);
+        gotoxy(25,16);
         branco;
         bvermelho;
         cout << " 4 - FAZER LOGOFF ";
@@ -284,6 +286,7 @@ void menuMed(char* medico, char* crm,char* telefone,int acesso)
         cout << " 1 - AGENDADOS ";
         limpaHelp();
         Sleep(1500);
+        agendamentoPacientes(crm);
         break;
 
     case 2:
@@ -291,7 +294,6 @@ void menuMed(char* medico, char* crm,char* telefone,int acesso)
         branco;
         bvermelho;
         cout << " 2 - BUSCAR DADOS DO PACIENTE ";
-        limpaHelp();
         buscaPaciente(medico,crm,telefone,acesso);
         Sleep(1500);
         break;
@@ -301,7 +303,6 @@ void menuMed(char* medico, char* crm,char* telefone,int acesso)
         branco;
         bvermelho;
         cout << " 3 - GERAR RECEITA ";
-        limpaHelp();
         Sleep(1500);
         receita(medico,crm,telefone,acesso);
         break;
@@ -313,6 +314,7 @@ void menuMed(char* medico, char* crm,char* telefone,int acesso)
         cout << " 4 - FAZER LOGOFF  ";
         limpaHelp();
         Sleep(1500);
+        limpaHelp();
         login(acesso);
         break;
 
@@ -353,6 +355,7 @@ void funcionarioCadastro(int acesso)
     ParseData(dateStr, &atual);
 
     ofstream cadastroFuncionario ("funcionarios.txt", ios::ate | ios::app);
+
     if(cadastroFuncionario.fail())
     {
         cout << " ERRO AO ABRIR ARQUIVO";
@@ -980,6 +983,7 @@ void menuAtendente(int acesso)
         cout << " 2 - AGENDAMENTO ";
         Sleep(1500);
         limpaHelp();
+        agendamento(acesso);
         break;
 
     case 3:
@@ -1322,7 +1326,7 @@ void buscaPaciente(char* medico, char* crm,char* telefone,int acesso)
     ifstream buscaCliente("clientes.txt");
 
     char nome[50],cpf[12];
-    int n=1,x=0;
+    int n=1,x=0,t=0;
 
     tela();
 
@@ -1396,11 +1400,25 @@ void buscaPaciente(char* medico, char* crm,char* telefone,int acesso)
         {
             char arq[15];
             sprintf(arq,"%s.txt",cpf);
+
             ifstream arquivo(arq);
-            system(arq);
+            if(arquivo.is_open())
+            {
+                system(arq);
+                t++;
+            }
         }
         buscaCliente.read((char *)(&cadC),sizeof(clientes));
     }
+
+    if(t == 0)
+    {
+
+    }
+    gotoxy(18,18);
+    branco;
+    bpreto;
+    cout << nome << " NAO POSSSUI RECEITAS ANTIGAS ";
     getchar();
     menuMed(medico,crm,telefone,acesso);
 
@@ -1541,7 +1559,7 @@ void receita(char* medico,char* crm,char* telefone,int acesso)
 
             ofstream receituario(arq,ios::app);
 
-            receituario << "\n\t\t LIFEMED \n"
+            receituario << "\n\n\t\t LIFEMED \n"
                         << "\t\t RECEITUARIO \n\n"
                         << "\t PACIENTE: " << cadC.nome << "\n"
                         << "\t SEXO: " << cadC.sexo << "\t" << " IDADE: " << idade(cadC.dia,cadC.mes,cadC.ano) << "\n\n\n\n\n\n";
@@ -1584,21 +1602,8 @@ void receita(char* medico,char* crm,char* telefone,int acesso)
                         << " DATA: " << dia << " / 0" << mes << " / " << ano+2000;
             receituario.close();
 
-            string aux;
-            int i=0;
-            ifstream receita(arq);
-            telaHelp();
-            while(!receita.eof())
-            {
-                getline(receita,aux);
-                gotoxy(84,2+i);
-                preto;
-                bbranco;
-                cout << aux;
-                i++;
-
-            }
             system(arq);
+
         }
         paciente.read((char *)(&cadC),sizeof(clientes));
     }
@@ -1640,32 +1645,35 @@ void Menualterar(int acesso)
 
     switch(opcao)
     {
-        case 1:
-            ExibirFuncionario(acesso);
-            break;
+    case 1:
+        ExibirFuncionario(acesso);
+        break;
 
-        case 2:
-            cadastroDoAdmin(acesso);
-            break;
+    case 2:
+        cadastroDoAdmin(acesso);
+        break;
     }
 }
 
-int number_func(){
+int number_func()
+{
     ifstream directory("funcionarios.txt", ios::in);
     int counter=0;
     cadastroDeFuncionarios aux;
     directory.read((char*)(&aux), sizeof(cadastroDeFuncionarios));
-     while(!directory.eof()){
-            gotoxy(84,4+counter);
-            preto;
-            bbranco;
-            directory.read((char*)(&aux), sizeof(cadastroDeFuncionarios));
-            counter++;
-     }
-     directory.close();
+    while(!directory.eof())
+    {
+        gotoxy(84,4+counter);
+        preto;
+        bbranco;
+        directory.read((char*)(&aux), sizeof(cadastroDeFuncionarios));
+        counter++;
+    }
+    directory.close();
     return counter;
 
 }
+
 void ExibirFuncionario(int acesso)
 {
     int qtd = number_func();
@@ -1679,19 +1687,21 @@ void ExibirFuncionario(int acesso)
     cout << "MEDICOS CADASTRADOS: " << endl << endl;
     CadP cadastro =  new cadastroDeFuncionarios[qtd];
     directory.read((char*)(&*(cadastro+i)), sizeof(cadastroDeFuncionarios));
-     while(!directory.eof()){
+    while(!directory.eof())
+    {
         gotoxy(84,4+i);
         preto;
         bbranco;
         cout << cadastro[i].nome << endl;
         i++;
         directory.read((char*)(&*(cadastro+i)), sizeof(cadastroDeFuncionarios));
-     }
+    }
     directory.close();
     RemoverFunc(cadastro,acesso);
 }
 
-void abreFecha(int acesso){
+void abreFecha(int acesso)
+{
     ofstream directory("funcionarios.txt");
     directory.close();
 }
@@ -1767,4 +1777,394 @@ void RemoverFunc(CadP cadastro,int acesso)
         }
     }
     ExibirFuncionario(acesso);
+}
+
+void agendamento(int acesso)
+{
+    ifstream arqMedico ("funcionarios.txt");
+
+    char dateStr[9];
+
+    _strdate(dateStr);
+
+    Data atual;
+
+    ParseData(dateStr, &atual);
+
+    int ano = atual.ano + 2000;
+    int dia = atual.dia;
+    int mes = atual.mes;
+
+    char cargo[50],nomeMed[50],nome[50],cpf[12],opc;
+    int n=1,x=0,NX=0,NXK=0,i=0;
+    int hj=0,u=0;
+    string aux;
+
+    tela();
+
+    gotoxy(30,5);
+    branco;
+    bpreto;
+    cout << " DADOS PARA AGENDAMENTO ";
+
+    gotoxy(23,8);
+    branco;
+    bpreto;
+    cout<<" INFORME A ESPECIALIDADE ";
+
+    do
+    {
+        for (int i = 0; i < 30; i++)
+        {
+            gotoxy(24+i,10);
+            bbranco;
+            nulo;
+        }
+        gotoxy(25,10);
+        preto;
+        fflush(stdin);
+        cin.getline(cargo,50);
+
+        x = strlen(cargo);
+
+        if(x > 50)
+        {
+            n++;
+        }
+        n--;
+    }
+    while(n>0);
+
+    arqMedico.read((char*)(&cadF), sizeof(cadastroDeFuncionarios));
+
+    telaHelp();
+
+    gotoxy(90,3);
+    preto;
+    bbranco;
+    cout << " MEDICOS DISPONIVEIS ";
+
+    while(!arqMedico.eof())
+    {
+        if(strcmp(cargo,cadF.cargo) == 0 )
+        {
+            NX++;
+
+            gotoxy(86,5+i);
+            preto;
+            bbranco;
+            cout << " - " << cadF.nome ;
+            i++;
+
+        }
+        arqMedico.read((char*)(&cadF), sizeof(cadastroDeFuncionarios));
+    }
+
+    arqMedico.close();
+
+    i = 1;
+    do
+    {
+        arqMedico.open("funcionarios.txt");
+        if(NX > 0)
+        {
+            gotoxy(18,12);
+            branco;
+            bpreto;
+            cout<<" INFORME O NOME MEDICO QUE DESEJA AGENDAR ";
+
+            n = 1;
+
+            do
+            {
+                for (int i = 0; i < 30; i++)
+                {
+                    gotoxy(24+i,14);
+                    bbranco;
+                    nulo;
+                }
+                gotoxy(25,14);
+                preto;
+                fflush(stdin);
+                cin.getline(nomeMed,50);
+
+                x = 0;
+
+                x = strlen(cargo);
+
+                if(x > 50)
+                {
+                    n++;
+                }
+                n--;
+            }
+            while(n>0);
+
+            arqMedico.read((char*)(&cadF), sizeof(cadastroDeFuncionarios));
+
+            while(!arqMedico.eof())
+            {
+                if(strcmp(nomeMed,cadF.nome) == 0)
+                {
+                    do
+                    {
+                        char p[11];
+
+                        sprintf(p,"%s.txt",cadF.crm);
+
+                        ifstream agendados(p);
+
+                        telaHelp();
+                        gotoxy(90,2+i);
+                        preto;
+                        bbranco;
+                        cout << " AGENDADOS ";
+
+                        u=0;
+
+                        if(agendados.is_open())
+                        {
+                            while(!agendados.eof())
+                            {
+                                getline(agendados,aux);
+                                gotoxy(84,5+u);
+                                preto;
+                                bbranco;
+                                cout << " - " << aux ;
+                                u++;
+                            }
+                            agendados.close();
+                        }
+
+                        tela();
+                        gotoxy(30,5);
+                        preto;
+                        bbranco;
+                        cout << " DADOS DE PACIENTES ";
+
+                        gotoxy(23,8);
+                        preto;
+                        bbranco;
+                        cout<<" INFORME O NOME DO PACIENTE ";
+
+                        do
+                        {
+                            for (int i = 0; i < 30; i++)
+                            {
+                                gotoxy(23+i,10);
+                                bbranco;
+                                nulo;
+                            }
+                            gotoxy(25,10);
+                            preto;
+                            fflush(stdin);
+                            cin.getline(nome,50);
+
+                            x = strlen(nome);
+
+                            if(x > 50)
+                            {
+                                n++;
+                            }
+                            n--;
+                        }
+                        while(n>0);
+
+                        gotoxy(23,12);
+                        branco;
+                        bpreto;
+                        cout<<" INFORME O CPF ";
+
+                        n=1;
+                        do
+                        {
+                            for (int i = 0; i < 15; i++)
+                            {
+                                gotoxy(23+i,14);
+                                bbranco;
+                                nulo;
+                            }
+                            gotoxy(24,14);
+                            preto;
+                            cin >> cpf;
+                            x = 0;
+
+                            x = strlen(cpf);
+
+                            if(x > 11 || x < 11)
+                            {
+                                n++;
+                            }
+                            n--;
+                        }
+                        while(n>0);
+
+                        ifstream Bclientes("clientes.txt");
+
+                        Bclientes.read((char *)(&cadC),sizeof(clientes));
+
+                        ofstream agendado(p,ios::app);
+
+                        while(!Bclientes.eof())
+                        {
+                            if((strcmp(nome,cadC.nome) == 0 ) && (strcmp(cpf,cadC.cpf) == 0) && i<=10)
+                            {
+                                agendado << " - " << nome << "\t Data: " << dia << "/" << mes << "/" << ano << "\n";
+
+                                limpaHelp();
+                                gotoxy(23,16);
+                                branco;
+                                bpreto;
+                                cout<<" AGENDADO COM SUCESSO ";
+
+                                u = 0;
+
+                                agendado.close();
+
+                                agendados.open(p);
+
+                                telaHelp();
+                                gotoxy(90,2+i);
+                                preto;
+                                bbranco;
+                                cout << " AGENDADOS ";
+
+                                while(!agendados.eof())
+                                {
+                                    getline(agendados,aux);
+                                    gotoxy(84,5+u);
+                                    preto;
+                                    bbranco;
+                                    cout << " - " << aux ;
+                                    u++;
+                                }
+
+                                agendados.close();
+
+                                i++;
+                            }
+                            Bclientes.read((char *)(&cadC),sizeof(clientes));
+                        }
+
+                        if(i == 10)
+                        {
+                            gotoxy(23,16);
+                            branco;
+                            bpreto;
+                            cout<<" AGENDAMENTOS COMPLETO ";
+                        }
+
+
+                        if(i == 1)
+                        {
+                            gotoxy(23,16);
+                            branco;
+                            bpreto;
+                            cout<<" PACIENTE NAO ENCONTRADO TENTE NOVAMENTE ";
+
+                            char n;
+
+                            gotoxy(23,18);
+                            branco;
+                            bpreto;
+                            cout<<" REALIZAR NOVO CADASTRO (S/N) ";
+
+                            for (int i = 0; i < 3; i++)
+                            {
+                                gotoxy(35+i,20);
+                                bbranco;
+                                nulo;
+                            }
+                            gotoxy(36,20);
+                            preto;
+                            fflush(stdin);
+                            cin >> n;
+
+                            if(n == 's' || n == 'S')
+                            {
+                                cadastroClientes(acesso);
+                            }
+
+                        }
+
+                        gotoxy(18,18);
+                        branco;
+                        bpreto;
+                        cout<<" REALIZAR NOVO AGENDAMENTO (S/N) ";
+
+                        for (int i = 0; i < 3; i++)
+                        {
+                            gotoxy(55+i,18);
+                            bbranco;
+                            nulo;
+                        }
+                        gotoxy(56,18);
+                        preto;
+                        fflush(stdin);
+                        cin >> opc;
+                    }
+                    while(opc == 's' || opc == 'S');
+                    NXK++;
+                }
+                arqMedico.read((char*)(&cadF), sizeof(cadastroDeFuncionarios));
+            }
+            if(NXK == 0)
+            {
+                gotoxy(20,18);
+                branco;
+                bpreto;
+                cout<<" MEDICO NAO CADASTRADO TENTE NOVAMENTE ";
+                hj++;
+                Sleep(1500);
+            }
+        }
+        arqMedico.close();
+    }
+    while(hj != 0);
+
+
+    if(NX == 0)
+    {
+        gotoxy(20,18);
+        branco;
+        bpreto;
+        cout<<" ESPECIALIDADE NAO DISPONIVEL ";
+        Sleep(1500);
+        agendamento(acesso);
+    }
+
+    limpaHelp();
+    arqMedico.close();
+    menuAtendente(acesso);
+
+}
+
+void agendamentoPacientes(char * crm)
+{
+    char p[11];
+
+    int i=0;
+
+    sprintf(p,"%s.txt",crm);
+
+    ifstream agendados(p);
+
+    string aux;
+
+    telaHelp();
+
+    gotoxy(90,3);
+    preto;
+    bbranco;
+    cout << " AGENDADOS ";
+
+    while(!agendados.eof()){
+        getline(agendados,aux);
+        gotoxy(86,5+i);
+        preto;
+        bbranco;
+        cout << " - " << aux;
+        i++;
+    }
+
 }
