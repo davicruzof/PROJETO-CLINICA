@@ -13,6 +13,8 @@ using namespace data;
 using namespace cadastros;
 typedef cadastroDeFuncionarios* CadP;
 
+void troco(float valor);
+void pagamento(int acesso,char * nome,char * nomeMed, char * cargo, float valorConsulta);
 void agendamento(int acesso);
 void funcionarioCadastro(int acesso);
 void menuAdmin(int acesso);
@@ -341,26 +343,28 @@ void menuMed(char* medico, char* crm,char* telefone,int acesso)
     menuMed(medico,crm,telefone,acesso);
 }
 
+
 void funcionarioCadastro(int acesso)
 {
     char novoCad;
+
+    char auz[50],cpf2[12],rg2[15],crm2[7];
+
     int n=1,x=0;
 
     char dateStr[9];
-
-    _strdate(dateStr);
 
     Data atual;
 
     ParseData(dateStr, &atual);
 
+    int ano = atual.ano + 2000;
+    int dia = atual.dia;
+    int mes = atual.mes;
+
     ofstream cadastroFuncionario ("funcionarios.txt", ios::ate | ios::app);
 
-    if(cadastroFuncionario.fail())
-    {
-        cout << " ERRO AO ABRIR ARQUIVO";
-        exit(1);
-    }
+    ifstream funcCadsatrados("funcionarios.txt");
 
     do
     {
@@ -390,6 +394,8 @@ void funcionarioCadastro(int acesso)
             cin.getline(cadF.nome,50);
 
             x = strlen(cadF.nome);
+
+            sprintf(auz,cadF.nome);
 
             if(x > 50)
             {
@@ -510,7 +516,7 @@ void funcionarioCadastro(int acesso)
             gotoxy(41,16);
             preto;
             cin >> cadF.dia;
-            if(cadF.dia<1 || cadF.dia >31)
+            if(cadF.dia < 1 || cadF.dia > 31)
             {
                 n++;
             }
@@ -531,8 +537,9 @@ void funcionarioCadastro(int acesso)
             gotoxy(46,16);
             preto;
             cin >> cadF.mes;
-            if(cadF.mes == 2 && cadF.dia > 28 )
+            if(cadF.mes == 2 && cadF.dia > 29 )
             {
+                do{
                 for (int i = 0; i < 4; i++)
                 {
                     gotoxy(40+i,16);
@@ -542,6 +549,8 @@ void funcionarioCadastro(int acesso)
                 gotoxy(41,16);
                 preto;
                 cin >> cadF.dia;
+                }while(cadF.dia > 29);
+
             }
             else
             {
@@ -567,7 +576,7 @@ void funcionarioCadastro(int acesso)
             preto;
             cin >> cadF.ano;
 
-            if((((atual.ano + 2000) - cadF.ano) < 18) || (((atual.ano + 2000) - cadF.ano) > 80))
+            if((( 2019 - cadF.ano) < 18) || (( 2019 - cadF.ano) > 80))
             {
                 n++;
             }
@@ -594,6 +603,8 @@ void funcionarioCadastro(int acesso)
             preto;
             cin >> cadF.cpf;
 
+            sprintf(cpf2,cadF.cpf);
+
             x = 0;
 
             x = strlen(cadF.cpf);
@@ -605,6 +616,22 @@ void funcionarioCadastro(int acesso)
             n--;
         }
         while(n>0);
+
+        funcCadsatrados.read((char *)(&cadF),sizeof(cadastroDeFuncionarios));
+
+        while(!funcCadsatrados.eof()){
+            if(strcmp(auz,cadF.nome)== 0 &&  strcmp(cpf2,cadF.cpf) == 0)
+            {
+               gotoxy(18,20);
+              branco;
+              bpreto;
+              cout << " FUNCIONARIO JA POSSUI CADASTRO ";
+              funcCadsatrados.close();
+              Sleep(2500);
+              menuAdmin(acesso);
+            }
+            funcCadsatrados.read((char *)(&cadF),sizeof(cadastroDeFuncionarios));
+        }
 
         gotoxy(18,20);
         branco;
@@ -625,6 +652,8 @@ void funcionarioCadastro(int acesso)
             preto;
             cin >> cadF.rg;
 
+            sprintf(rg2,cadF.rg);
+
             x = 0;
 
             x = strlen(cadF.rg);
@@ -636,6 +665,24 @@ void funcionarioCadastro(int acesso)
             n--;
         }
         while(n>0);
+
+        funcCadsatrados.open("funcionarios.txt");
+
+        funcCadsatrados.read((char *)(&cadF),sizeof(cadastroDeFuncionarios));
+
+        while(!funcCadsatrados.eof()){
+            if(strcmp(rg2,cadF.rg) == 0)
+            {
+              gotoxy(18,22);
+              branco;
+              bpreto;
+              cout << " FUNCIONARIO JA POSSUI CADASTRO ";
+              funcCadsatrados.close();
+              Sleep(2500);
+              menuAdmin(acesso);
+            }
+            funcCadsatrados.read((char *)(&cadF),sizeof(cadastroDeFuncionarios));
+        }
 
         gotoxy(18,22);
         branco;
@@ -667,6 +714,24 @@ void funcionarioCadastro(int acesso)
             n--;
         }
         while(n>0);
+
+        funcCadsatrados.open("funcionarios.txt");
+
+        funcCadsatrados.read((char *)(&cadF),sizeof(cadastroDeFuncionarios));
+
+        while(!funcCadsatrados.eof()){
+            if(strcmp(crm2,cadF.crm) == 0)
+            {
+               gotoxy(18,20);
+              branco;
+              bpreto;
+              cout << " FUNCIONARIO JA POSSUI CADASTRO ";
+              funcCadsatrados.close();
+              Sleep(2500);
+              menuAdmin(acesso);
+            }
+            funcCadsatrados.read((char *)(&cadF),sizeof(cadastroDeFuncionarios));
+        }
 
         gotoxy(18,24);
         branco;
@@ -946,21 +1011,26 @@ void menuAtendente(int acesso)
     gotoxy(25,18);
     preto;
     bbranco;
-    cout << " 5 - FAZER LOGOUT ";
+    cout << " 5 - PAGAMENTO ";
 
     gotoxy(25,20);
     preto;
     bbranco;
-    cout << " 6 - ENCERRAR O SISTEMA ";
+    cout << " 6 - FAZER LOGOUT ";
+
+    gotoxy(25,22);
+    preto;
+    bbranco;
+    cout << "7 - ENCERRAR O SISTEMA";
 
     for (int i = 0; i < 5; i++)
     {
-        gotoxy(35+i,22);
+        gotoxy(35+i,24);
         bbranco;
         nulo;
     }
 
-    gotoxy(36,22);
+    gotoxy(36,24);
     preto;
     cin >> opc;
 
@@ -1010,18 +1080,25 @@ void menuAtendente(int acesso)
         gotoxy(25,18);
         branco;
         bvermelho;
-        cout << " 5 - FAZER LOGOUT ";
+        cout << " 5 - PAGAMENTO";
         Sleep(1500);
         limpaHelp();
-        login(acesso);
+//        pagamento(acesso);
         break;
     case 6:
         gotoxy(25,20);
         branco;
         bvermelho;
-        cout << " 6 - ENCERRAR O SISTEMA ";
+        cout << " 6 - FAZER LOGOUT ";
         Sleep(1500);
-        system("cls");
+        login(acesso);
+        break;
+    case 7:
+        gotoxy(25,22);
+        branco;
+        bvermelho;
+        cout << " 7 - ENCERRAR O SISTEMA ";
+        Sleep(1500);
         exit(1);
         break;
     }
@@ -1059,7 +1136,7 @@ void cadastroClientes(int acesso)
 
     char dateStr[9];
 
-    _strdate(dateStr);
+
 
     Data atual;
 
@@ -1176,6 +1253,7 @@ void cadastroClientes(int acesso)
 
             if(cadC.mes == 2 && cadC.dia > 28 )
             {
+                do{
                 for (int i = 0; i < 4; i++)
                 {
                     gotoxy(40+i,12);
@@ -1184,7 +1262,8 @@ void cadastroClientes(int acesso)
                 }
                 gotoxy(41,12);
                 preto;
-                cin>>cadC.dia ;
+                cin >> cadC.dia;
+                }while(cadC.dia > 29);
             }
             else
             {
@@ -1216,13 +1295,13 @@ void cadastroClientes(int acesso)
             }
             else
             {
-                if(cadC.mes > atual.mes && cadC.ano > (atual.ano + 2000))
+                if(cadC.mes > atual.mes && cadC.ano > 2019)
                 {
                     n++;
                 }
                 else
                 {
-                    if(cadC.dia > atual.dia && cadC.mes == atual.mes && cadC.ano > (atual.ano + 2000))
+                    if(cadC.dia > atual.dia && cadC.mes == atual.mes && cadC.ano > 2019)
                     {
                         n++;
                     }
@@ -1426,10 +1505,7 @@ void buscaPaciente(char* medico, char* crm,char* telefone,int acesso)
 
 int idade(int dia,int mes, int ano)
 {
-
     char dateStr[9];
-
-    _strdate(dateStr);
 
     Data atual;
 
@@ -1473,7 +1549,7 @@ void receita(char* medico,char* crm,char* telefone,int acesso)
 
     char dateStr[9];
 
-    _strdate(dateStr);
+
 
     Data atual;
 
@@ -1785,7 +1861,7 @@ void agendamento(int acesso)
 
     char dateStr[9];
 
-    _strdate(dateStr);
+
 
     Data atual;
 
@@ -2017,6 +2093,9 @@ void agendamento(int acesso)
                                 bpreto;
                                 cout<<" AGENDADO COM SUCESSO ";
 
+                                limpaHelp();
+                                Sleep(2000);
+
                                 u = 0;
 
                                 agendado.close();
@@ -2042,6 +2121,9 @@ void agendamento(int acesso)
                                 agendados.close();
 
                                 i++;
+
+                                pagamento(acesso,nome,cadF.nome,cadF.cargo,cadF.valorConsulta);
+
                             }
                             Bclientes.read((char *)(&cadC),sizeof(clientes));
                         }
@@ -2158,7 +2240,8 @@ void agendamentoPacientes(char * crm)
     bbranco;
     cout << " AGENDADOS ";
 
-    while(!agendados.eof()){
+    while(!agendados.eof())
+    {
         getline(agendados,aux);
         gotoxy(86,5+i);
         preto;
@@ -2166,5 +2249,674 @@ void agendamentoPacientes(char * crm)
         cout << " - " << aux;
         i++;
     }
+
+}
+
+void pagamento(int acesso,char * nome,char * nomeMed, char * cargo, float valorConsulta)
+{
+    char titular[50],numCard[16],cvc[3],cx;
+    int opc,n=1,Numparcelas;
+    float total,valorRecebido,ValorTroco;
+
+    tela();
+
+    gotoxy(30,5);
+    preto;
+    bbranco;
+    cout << " REALIZACAO DO PAGAMENTO ";
+
+    gotoxy(20,10);
+    preto;
+    bbranco;
+    cout << " PACIENTE : " << nome;
+
+    gotoxy(20,12);
+    preto;
+    bbranco;
+    cout << " DR. " << nomeMed << " | " << cargo ;
+
+    gotoxy(20,14);
+    preto;
+    bbranco;
+    cout << " VALOR DA CONSULTA - R\x24:  " << valorConsulta ;
+
+    gotoxy(20,16);
+    preto;
+    bbranco;
+    cout << " QUAL A FORMA DE PAGAMENTO ";
+
+    gotoxy(16,18);
+    preto;
+    bbranco;
+    cout << " DIGITE 1 PARA CARTAO E 2 PARA DINHEIRO ";
+    do
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            gotoxy(58+i,18);
+            bbranco;
+            nulo;
+        }
+        gotoxy(59,18);
+        preto;
+        cin >> opc;
+        if(opc < 0 || opc > 2)
+        {
+            n++;
+        }
+        n--;
+    }
+    while(n > 0);
+    if(opc == 1)
+    {
+        tela();
+
+        gotoxy(20,5);
+        preto;
+        bbranco;
+        cout << " PAGAMENTO COM CARTAO DE CREDITO ";
+
+        if(valorConsulta < 300)
+        {
+            gotoxy(20,10);
+            preto;
+            bbranco;
+            cout << " INFORME O NOME DO TITULAR DO CARTAO ";
+
+            for (int i = 0; i < 30; i++)
+            {
+                gotoxy(20+i,12);
+                bbranco;
+                nulo;
+            }
+            gotoxy(21,12);
+            preto;
+            fflush(stdin);
+            cin.getline(titular,50);
+
+            gotoxy(20,14);
+            preto;
+            bbranco;
+            cout << " DIGITE O NUMERO DO CARTAO ";
+
+            for (int i = 0; i < 18; i++)
+            {
+                gotoxy(20+i,16);
+                bbranco;
+                nulo;
+            }
+            gotoxy(21,16);
+            preto;
+            fflush(stdin);
+            cin.getline(numCard,16);
+
+            if(numCard[0] == '5' || numCard[0] == '2')
+            {
+                gotoxy(20,18);
+                preto;
+                bbranco;
+                cout << " CARTAO MASTERCARD DETECTADO ";
+
+                gotoxy(18,20);
+                preto;
+                bbranco;
+                cout << " DIGITE O CVC QUE SAO OS 3 NUMEROS ";
+                gotoxy(18,21);
+                preto;
+                bbranco;
+                cout << " LOCALIZADO NA PARTE DE TRAS DO SEU CARTAO ";
+
+                for (int i = 0; i < 5; i++)
+                {
+                    gotoxy(56+i,20);
+                    bbranco;
+                    nulo;
+                }
+                gotoxy(58,20);
+                preto;
+                cin >> cvc;
+
+                gotoxy(20,23);
+                preto;
+                bbranco;
+                cout << " PROCESSANDO PAGAMENTO ... ";
+
+                Sleep(2000);
+
+                gotoxy(20,25);
+                preto;
+                bbranco;
+                cout << " PAGAMENTO EFETUADO COM SUCESSO ";
+                Sleep(2000);
+            }
+            if(numCard[0] == '4')
+            {
+
+                gotoxy(20,18);
+                preto;
+                bbranco;
+                cout << " CARTAO VISA DETECTADO ";
+
+                gotoxy(18,20);
+                preto;
+                bbranco;
+                cout << " DIGITE O CVC QUE SAO OS 3 NUMEROS ";
+                gotoxy(18,21);
+                preto;
+                bbranco;
+                cout << " LOCALIZADO NA PARTE DE TRAS DO SEU CARTAO ";
+
+                for (int i = 0; i < 5; i++)
+                {
+                    gotoxy(56+i,20);
+                    bbranco;
+                    nulo;
+                }
+                gotoxy(58,20);
+                preto;
+                cin >> cvc;
+
+                gotoxy(20,23);
+                preto;
+                bbranco;
+                cout << " PROCESSANDO PAGAMENTO ... ";
+
+                Sleep(2000);
+
+                gotoxy(20,25);
+                preto;
+                bbranco;
+                cout << " PAGAMENTO EFETUADO COM SUCESSO ";
+                Sleep(2000);
+            }
+            if(numCard[0] == '3')
+            {
+
+                gotoxy(20,18);
+                preto;
+                bbranco;
+                cout << " CARTAO AMERICAN EXPRESS DETECTADO ";
+
+                gotoxy(18,20);
+                preto;
+                bbranco;
+                cout << " DIGITE O CVC QUE SAO OS 3 NUMEROS ";
+                gotoxy(18,21);
+                preto;
+                bbranco;
+                cout << " LOCALIZADO NA PARTE DE TRAS DO SEU CARTAO ";
+
+                for (int i = 0; i < 5; i++)
+                {
+                    gotoxy(56+i,20);
+                    bbranco;
+                    nulo;
+                }
+                gotoxy(58,20);
+                preto;
+                cin >> cvc;
+
+                gotoxy(20,23);
+                preto;
+                bbranco;
+                cout << " PROCESSANDO PAGAMENTO ... ";
+
+                Sleep(2000);
+
+                gotoxy(20,25);
+                preto;
+                bbranco;
+                cout << " PAGAMENTO EFETUADO COM SUCESSO ";
+                Sleep(2000);
+            }
+
+            else
+            {
+                gotoxy(20,18);
+                preto;
+                bbranco;
+                cout << " CARTAO COM BANDEIRA DESCONHECIDA ";
+
+                gotoxy(20,20);
+                preto;
+                bbranco;
+                cout << " DESEJA CONFIRMAR O PAGAMENTO (S/N) ";
+
+                for (int i = 0; i < 3; i++)
+                {
+                    gotoxy(56+i,20);
+                    bbranco;
+                    nulo;
+                }
+                gotoxy(57,20);
+                preto;
+                cin >> cx;
+                if(cx == 's' || cx == 'S')
+                {
+                    gotoxy(18,22);
+                    preto;
+                    bbranco;
+                    cout << " DIGITE O CVC QUE SAO OS 3 NUMEROS ";
+                    gotoxy(18,23);
+                    preto;
+                    bbranco;
+                    cout << " LOCALIZADO NA PARTE DE TRAS DO SEU CARTAO ";
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        gotoxy(55+i,23);
+                        bbranco;
+                        nulo;
+                    }
+                    gotoxy(56,23);
+                    preto;
+                    cin >> cvc;
+
+                    gotoxy(20,25);
+                    preto;
+                    bbranco;
+                    cout << " PROCESSANDO PAGAMENTO ... ";
+
+                    Sleep(2000);
+
+                    gotoxy(20,27);
+                    preto;
+                    bbranco;
+                    cout << " PAGAMENTO EFETUADO COM SUCESSO ";
+                    Sleep(2000);
+
+
+                }
+                else
+                {
+                    gotoxy(20,20);
+                    preto;
+                    bbranco;
+                    cout << " TRANSACAO NAO AUTORIZADA ";
+                    menuAtendente(acesso);
+                }
+            }
+        }
+        else
+        {
+            if(valorConsulta >= 300)
+            {
+                tela();
+
+                gotoxy(20,10);
+                preto;
+                bbranco;
+                cout << " DIGITE O TOTAL DE PARCELAS ";
+
+                for (int i = 0; i < 3; i++)
+                {
+                    gotoxy(50+i,10);
+                    bbranco;
+                    nulo;
+                }
+                gotoxy(51,10);
+                preto;
+                cin >> Numparcelas;
+
+                total = valorConsulta / Numparcelas;
+
+                gotoxy(20,12);
+                preto;
+                bbranco;
+                cout << Numparcelas << " X  DE : " << total;
+
+                Sleep(3500);
+
+                tela();
+
+                gotoxy(20,5);
+                preto;
+                bbranco;
+                cout << " PAGAMENTO COM CARTAO DE CREDITO ";
+
+                gotoxy(20,10);
+                preto;
+                bbranco;
+                cout << " INFORME O NOME DO TITULAR DO CARTAO ";
+
+                for (int i = 0; i < 30; i++)
+                {
+                    gotoxy(20+i,12);
+                    bbranco;
+                    nulo;
+                }
+                gotoxy(21,12);
+                preto;
+                fflush(stdin);
+                cin.getline(titular,50);
+
+                gotoxy(20,14);
+                preto;
+                bbranco;
+                cout << " DIGITE O NUMERO DO CARTAO ";
+
+                for (int i = 0; i < 18; i++)
+                {
+                    gotoxy(20+i,16);
+                    bbranco;
+                    nulo;
+                }
+                gotoxy(21,16);
+                preto;
+                fflush(stdin);
+                cin.getline(numCard,16);
+
+                if(numCard[0] == '5' || numCard[0] == '2')
+                {
+                    gotoxy(20,18);
+                    preto;
+                    bbranco;
+                    cout << " CARTAO MASTERCARD DETECTADO ";
+
+                    gotoxy(20,20);
+                    preto;
+                    bbranco;
+                    cout << " DIGITE O CVC QUE SAO OS 3 NUMEROS ";
+                    gotoxy(20,21);
+                    preto;
+                    bbranco;
+                    cout << " LOCALIZADO NA PARTE DE TRAS DO SEU CARTAO ";
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        gotoxy(57+i,20);
+                        bbranco;
+                        nulo;
+                    }
+                    gotoxy(58,20);
+                    preto;
+                    cin >> cvc;
+
+                    gotoxy(20,23);
+                    preto;
+                    bbranco;
+                    cout << " PROCESSANDO PAGAMENTO ... ";
+
+                    Sleep(2000);
+
+                    gotoxy(20,25);
+                    preto;
+                    bbranco;
+                    cout << " PAGAMENTO EFETUADO COM SUCESSO ";
+                    Sleep(2000);
+                }
+                if(numCard[0] == '4')
+                {
+
+                    gotoxy(20,18);
+                    preto;
+                    bbranco;
+                    cout << " CARTAO VISA DETECTADO ";
+
+                    gotoxy(20,20);
+                    preto;
+                    bbranco;
+                    cout << " DIGITE O CVC QUE SAO OS 3 NUMEROS ";
+                    gotoxy(20,21);
+                    preto;
+                    bbranco;
+                    cout << " LOCALIZADO NA PARTE DE TRAS DO SEU CARTAO ";
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        gotoxy(57+i,20);
+                        bbranco;
+                        nulo;
+                    }
+                    gotoxy(58,20);
+                    preto;
+                    cin >> cvc;
+
+                    gotoxy(20,23);
+                    preto;
+                    bbranco;
+                    cout << " PROCESSANDO PAGAMENTO ... ";
+
+                    Sleep(2000);
+
+                    gotoxy(20,25);
+                    preto;
+                    bbranco;
+                    cout << " PAGAMENTO EFETUADO COM SUCESSO ";
+                    Sleep(2000);
+                }
+                if(numCard[0] == '3')
+                {
+
+                    gotoxy(20,18);
+                    preto;
+                    bbranco;
+                    cout << " CARTAO AMERICAN EXPRESS DETECTADO ";
+
+                    gotoxy(18,20);
+                    preto;
+                    bbranco;
+                    cout << " DIGITE O CVC QUE SAO OS 3 NUMEROS ";
+                    gotoxy(18,21);
+                    preto;
+                    bbranco;
+                    cout << " LOCALIZADO NA PARTE DE TRAS DO SEU CARTAO ";
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        gotoxy(57+i,20);
+                        bbranco;
+                        nulo;
+                    }
+                    gotoxy(58,20);
+                    preto;
+                    cin >> cvc;
+
+                    gotoxy(20,23);
+                    preto;
+                    bbranco;
+                    cout << " PROCESSANDO PAGAMENTO ... ";
+
+                    Sleep(2000);
+
+                    gotoxy(20,25);
+                    preto;
+                    bbranco;
+                    cout << " PAGAMENTO EFETUADO COM SUCESSO ";
+                    Sleep(2000);
+                }
+                if(numCard[0] != '5' || numCard[0] != '2' || numCard[0] != '4' || numCard[0] != '3')
+                {
+                    gotoxy(20,18);
+                    preto;
+                    bbranco;
+                    cout << " CARTAO COM BANDEIRA DESCONHECIDA ";
+
+                    gotoxy(20,20);
+                    preto;
+                    bbranco;
+                    cout << " DESEJA CONFIRMAR O PAGAMENTO (S/N) ";
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        gotoxy(56+i,20);
+                        bbranco;
+                        nulo;
+                    }
+                    gotoxy(57,20);
+                    preto;
+                    cin >> cx;
+                    if(cx == 's' || cx == 'S')
+                    {
+                        gotoxy(18,22);
+                        preto;
+                        bbranco;
+                        cout << " DIGITE O CVC QUE SAO OS 3 NUMEROS ";
+                        gotoxy(18,23);
+                        preto;
+                        bbranco;
+                        cout << " LOCALIZADO NA PARTE DE TRAS DO SEU CARTAO ";
+
+                        for (int i = 0; i < 5; i++)
+                        {
+                            gotoxy(55+i,23);
+                            bbranco;
+                            nulo;
+                        }
+                        gotoxy(56,23);
+                        preto;
+                        cin >> cvc;
+
+                        gotoxy(20,25);
+                        preto;
+                        bbranco;
+                        cout << " PROCESSANDO PAGAMENTO ... ";
+
+                        Sleep(2000);
+
+                        gotoxy(20,27);
+                        preto;
+                        bbranco;
+                        cout << " PAGAMENTO EFETUADO COM SUCESSO ";
+                        Sleep(2000);
+
+
+                    }
+                    else
+                    {
+                        gotoxy(20,20);
+                        preto;
+                        bbranco;
+                        cout << " TRANSACAO NAO AUTORIZADA ";
+                        menuAtendente(acesso);
+                    }
+                }
+            }
+        }
+        menuAtendente(acesso);
+    }
+
+    if(opc == 2)
+    {
+        tela();
+
+        gotoxy(20,5);
+        preto;
+        bbranco;
+        cout << " PAGAMENTO A VISTA ";
+
+        gotoxy(20,10);
+        preto;
+        bbranco;
+        cout << " INFORME O VALOR RECEBIDO ";
+
+        int n=1;
+
+        do
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                gotoxy(20+i,12);
+                bbranco;
+                nulo;
+            }
+            gotoxy(21,12);
+            preto;
+            cin >> valorRecebido;
+
+            if(valorRecebido <= valorConsulta)
+            {
+                n++;
+            }
+            n--;
+        }
+        while(n>0);
+
+
+        ValorTroco = valorRecebido - valorConsulta;
+
+        troco(ValorTroco);
+
+        Sleep(5000);
+
+        menuAtendente(acesso);
+    }
+}
+
+void troco(float valor)
+{
+
+    int um=0,dois=0,cinco=0,dez=0,vinte=0,cinquenta=0;
+    int resto;
+
+    resto = valor;
+
+    while(resto >= 50);
+    {
+        cinquenta++;
+        resto = resto - 50;
+    }
+
+    gotoxy(20,12);
+    preto;
+    bbranco;
+    cout << " NOTAS DE 50: " << cinquenta;
+
+    while(resto >= 20);
+    {
+        vinte++;
+        resto = resto - 20;
+    }
+
+    gotoxy(20,14);
+    preto;
+    bbranco;
+    cout << " NOTAS DE 20: " << vinte;
+
+    while(resto >= 10);
+    {
+        dez++;
+        resto = resto - 10;
+    }
+
+    gotoxy(20,16);
+    preto;
+    bbranco;
+    cout << " NOTAS DE 10: " << dez;
+
+    while(resto >= 5);
+    {
+        cinco++;
+        resto = resto - 5;
+    }
+
+    gotoxy(20,18);
+    preto;
+    bbranco;
+    cout << " NOTAS DE 5: " << cinco;
+
+    while(resto >= 2);
+    {
+        dois++;
+        resto = resto - 2;
+    }
+
+    gotoxy(20,20);
+    preto;
+    bbranco;
+    cout << " NOTAS DE 2: " << dois;
+
+    while(resto >= 1);
+    {
+        um++;
+        resto = resto - 1;
+    }
+
+    gotoxy(20,22);
+    preto;
+    bbranco;
+    cout << " NOTAS DE 1: " << um;
+
+    getchar();
 
 }
