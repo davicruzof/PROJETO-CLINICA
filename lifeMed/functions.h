@@ -2853,7 +2853,7 @@ void troco(int valor)
     quantiarestante=numero/50;
     numero=numero % 50;
 
-    gotoxy(20,13);
+    gotoxy(20,18);
     preto;
     bbranco;
     cout << " NOTAS DE 50: " << quantiarestante;
@@ -2861,7 +2861,7 @@ void troco(int valor)
     quantiarestante=numero/20;
     numero=numero % 20;
 
-    gotoxy(20,14);
+    gotoxy(20,19);
     preto;
     bbranco;
     cout << " NOTAS DE 20: " << quantiarestante;
@@ -2869,7 +2869,7 @@ void troco(int valor)
     quantiarestante=numero/10;
     numero=numero % 10;
 
-    gotoxy(20,15);
+    gotoxy(20,20);
     preto;
     bbranco;
     cout << " NOTAS DE 10: " << quantiarestante;
@@ -2877,7 +2877,7 @@ void troco(int valor)
        quantiarestante=numero/5;
         numero=numero % 5;
 
-    gotoxy(20,15);
+    gotoxy(20,21);
     preto;
     bbranco;
     cout << " NOTAS DE 5: " << quantiarestante;
@@ -2885,7 +2885,7 @@ void troco(int valor)
     quantiarestante=numero/2;
     numero=numero % 2;
 
-    gotoxy(20,16);
+    gotoxy(20,22);
     preto;
     bbranco;
     cout << " NOTAS DE 2: " << quantiarestante;
@@ -2893,9 +2893,10 @@ void troco(int valor)
 
     quantiarestante=numero/1;
     numero=numero % 1;
-     gotoxy(20,17);
-     preto;
-     bbranco;
+    gotoxy(20,23);
+    preto;
+    bbranco;
     cout << " MOEDAS DE 1: " << quantiarestante;
     getchar();
 }
+
