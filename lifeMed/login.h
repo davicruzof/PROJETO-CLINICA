@@ -13,6 +13,8 @@ void login(int acesso)
 
     char senha[15];
     char user[50];
+    char ch;
+    int pos=0;
 
     if(acesso >= 0)
     {
@@ -53,12 +55,34 @@ void login(int acesso)
 
         gotoxy(36,18);
         preto;
-        cin >> senha;
 
-        gotoxy(40,29);
-        vermelho;
-        if (cin.get() == '\n')
+        while(true)
         {
+            ch=getch();
+            if(pos>=15)
+            {
+                cout<<'\a';    /* beep if password is too long */
+                continue;
+            }
+
+            if(ch==13)
+                break;  /* User have pressed ENTER*/
+
+            else if(ch==8)  /* BACKSPACE was pressed*/
+            {
+                cout <<"\b \b";
+                senha[--pos]='\0';
+            }
+            else/* A..Z a...z  BUG: I forgot what... */
+            {
+                cout <<"*";
+                senha[pos++]=ch;
+                senha[pos]='\0';
+            }
+            if(pos<=0)
+                pos=0;
+        }
+
             if(busca.is_open())
             {
                 busca.read((char *)(&cadF),sizeof(cadastroDeFuncionarios));
@@ -102,7 +126,7 @@ void login(int acesso)
                 getchar();
                 login(acesso-1);
             }
-        }
+
     }
     else
     {
