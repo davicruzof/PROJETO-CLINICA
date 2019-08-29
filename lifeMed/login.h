@@ -14,14 +14,14 @@ void login(int acesso)
     char senha[15];
     char user[50];
 
-    tela();
+    if(acesso >= 0)
+    {
+        tela();
 
-    gotoxy(30,5);
-    branco;
-    bpreto;
-    cout << " SEJA BEM VINDO ";
-
-    if(acesso >= 0){
+        gotoxy(30,5);
+        branco;
+        bpreto;
+        cout << " SEJA BEM VINDO ";
 
         gotoxy(23,15);
         branco;
@@ -87,45 +87,37 @@ void login(int acesso)
             }
             else
             {
-                gotoxy(23,22);
+                gotoxy(25,22);
                 branco;
                 bpreto;
                 cout << " USUARIO OU SENHA INCORRETO ";
-                gotoxy(23,25);
+                gotoxy(20,25);
                 branco;
                 bpreto;
                 cout << " VOCE TEM + " << acesso << " TENTATIVAS  RESTANTES" ;
+                gotoxy(20,27);
+                branco;
+                bpreto;
+                cout << " PESSIONE ENTER PARA TENTAR NOVAMENTE " ;
                 getchar();
                 login(acesso-1);
             }
         }
-
     }
-    else{
+    else
+    {
+        tela();
+        gotoxy(23,15);
+        branco;
+        bpreto;
+        cout << " VOCE ATINGIU O MAXINO DE TENTATIVAS ";
+        gotoxy(23,17);
+        branco;
+        bpreto;
+        cout << " ENCERRANDO O SISTEMA ... ";
+        Sleep(3500);
         system("cls");
         exit(1);
     }
 
 }
-//
-//char c;
-//    int a=0,j=0;
-//
-//    do{
-//           c=getch();
-//           if(isprint(c)){       //Analisa se o valor da variável c é imprimivel
-//           senha[a]=c;  //Se for, armazena o caractere
-//           a++;
-//           gotoxy(36+a,18);
-//           j = 36+a;
-//           preto;
-//           printf("*");          //imprime o * Anterisco
-//           }
-//           else if(c==8&&a){     //8 é o caractere BackSpace na tabela ASCII, && a analisa se a é diferente de 0
-//           senha[a]='\0';
-//           a--;
-//           gotoxy(j--,18);
-//           preto;
-//           printf("\b \b");       //Apagando o caractere digitado
-//           }
-//       }while(c!='\n');

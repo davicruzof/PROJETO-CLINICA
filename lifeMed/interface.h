@@ -14,9 +14,9 @@
 
 void limpaHelp()
 {
-    for(int i=0; i<28; i++)
+    for(int i=0; i<29; i++)
     {
-        for(int j=0; j<37; j++)
+        for(int j=0; j<50; j++)
         {
             gotoxy(83+j,2+i);
             preto;
@@ -55,9 +55,9 @@ void tela()
 
 void telaHelp()
 {
-    for(int i=0; i<28; i++)
+    for(int i=0; i<29; i++)
     {
-        for(int j=0; j<37; j++)
+        for(int j=0; j<50; j++)
         {
             gotoxy(83+j,2+i);
             branco;
