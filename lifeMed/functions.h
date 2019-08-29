@@ -2897,6 +2897,6 @@ void troco(int valor)
     preto;
     bbranco;
     cout << " MOEDAS DE 1: " << quantiarestante;
-    getchar();
+    system("pause");
 }
 
