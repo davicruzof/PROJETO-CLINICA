@@ -13,7 +13,7 @@ using namespace data;
 using namespace cadastros;
 typedef cadastroDeFuncionarios* CadP;
 
-void troco(float valor);
+void troco(int valor);
 void pagamento(int acesso,char * nome,char * nomeMed, char * cargo, float valorConsulta);
 void agendamento(int acesso);
 void funcionarioCadastro(int acesso);
@@ -2256,8 +2256,8 @@ void pagamento(int acesso,char * nome,char * nomeMed, char * cargo, float valorC
 {
     char titular[50],numCard[17],cvc[3],cx;
     int opc,n=1,Numparcelas;
-    float total,valorRecebido,ValorTroco;
-
+    float total;
+    int valorRecebido,ValorTroco;
     tela();
 
     gotoxy(30,5);
@@ -2843,80 +2843,55 @@ void pagamento(int acesso,char * nome,char * nomeMed, char * cargo, float valorC
     }
 }
 
-void troco(float valor)
+void troco(int valor)
 {
-
-    int um=0,dois=0,cinco=0,dez=0,vinte=0,cinquenta=0;
-    int resto;
-
-    resto = valor;
-
-    while(resto >= 50);
-    {
-        cinquenta++;
-        resto = resto - 50;
-    }
-
-    gotoxy(20,12);
-    preto;
-    bbranco;
-    cout << " NOTAS DE 50: " << cinquenta;
-
-    while(resto >= 20);
-    {
-        vinte++;
-        resto = resto - 20;
-    }
-
-    gotoxy(20,14);
-    preto;
-    bbranco;
-    cout << " NOTAS DE 20: " << vinte;
-
-    while(resto >= 10);
-    {
-        dez++;
-        resto = resto - 10;
-    }
-
-    gotoxy(20,16);
-    preto;
-    bbranco;
-    cout << " NOTAS DE 10: " << dez;
-
-    while(resto >= 5);
-    {
-        cinco++;
-        resto = resto - 5;
-    }
+    int numero=0, quantiarestante=0;
+    numero=valor;
+    // calculando notas de 50
+    quantiarestante=numero/50;
+    numero=numero % 50;
 
     gotoxy(20,18);
     preto;
     bbranco;
-    cout << " NOTAS DE 5: " << cinco;
+    cout << " NOTAS DE 50: " << quantiarestante<<endl;
+    //calculando notas de 20
+    quantiarestante=numero/20;
+    numero=numero % 20;
 
-    while(resto >= 2);
-    {
-        dois++;
-        resto = resto - 2;
-    }
-
-    gotoxy(20,20);
+    gotoxy(20,18);
     preto;
     bbranco;
-    cout << " NOTAS DE 2: " << dois;
+    cout << " NOTAS DE 20: " << quantiarestante<<endl;
+    //calculando notas de 10
+    quantiarestante=numero/10;
+    numero=numero % 10;
 
-    while(resto >= 1);
-    {
-        um++;
-        resto = resto - 1;
-    }
-
-    gotoxy(20,22);
+    gotoxy(20,18);
     preto;
     bbranco;
-    cout << " NOTAS DE 1: " << um;
+    cout << " NOTAS DE 10: " << quantiarestante<<endl;
+    // calculando notas de 5
+       quantiarestante=numero/5;
+        numero=numero % 5;
 
+    gotoxy(20,18);
+    preto;
+    bbranco;
+    cout << " NOTAS DE 5: " << quantiarestante<<endl;
+    // calculando notaS DE 2
+    quantiarestante=numero/2;
+    numero=numero % 2;
+
+    gotoxy(20,18);
+    preto;
+    bbranco;
+    cout << " NOTAS DE 2: " << quantiarestante<<endl;
+    // calculando notas de 1
+
+    quantiarestante=numero/1;
+    numero=numero % 1;
+
+    cout << " MOEDAS DE 1: " << quantiarestante<<endl;
     getchar();
-
 }
