@@ -2254,7 +2254,7 @@ void agendamentoPacientes(char * crm)
 
 void pagamento(int acesso,char * nome,char * nomeMed, char * cargo, float valorConsulta)
 {
-    char titular[50],numCard[16],cvc[3],cx;
+    char titular[50],numCard[17],cvc[3],cx;
     int opc,n=1,Numparcelas;
     float total,valorRecebido,ValorTroco;
 
@@ -2348,7 +2348,7 @@ void pagamento(int acesso,char * nome,char * nomeMed, char * cargo, float valorC
             gotoxy(21,16);
             preto;
             fflush(stdin);
-            cin.getline(numCard,16);
+            cin.getline(numCard,17);
 
             if(numCard[0] == '5' || numCard[0] == '2')
             {
