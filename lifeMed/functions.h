@@ -2896,7 +2896,7 @@ void troco(int valor)
     gotoxy(20,23);
     preto;
     bbranco;
-    cout << " MOEDAS DE 1: " << quantiarestante;
+    cout << " MOEDAS DE 1: " << quantiarestante<<endl;
     system("pause");
 }
 
