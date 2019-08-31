@@ -341,9 +341,7 @@ void funcionarioCadastro(int acesso)
 
     int n=1,x=0;
 
-    ofstream cadastroFuncionario ("funcionarios.txt", ios::ate | ios::app);
-
-    ifstream funcCadsatrados("funcionarios.txt");
+    ofstream cadastroFuncionario;
 
     do
     {
@@ -598,23 +596,6 @@ void funcionarioCadastro(int acesso)
         }
         while(n>0);
 
-        funcCadsatrados.read((char *)(&cadF),sizeof(cadastroDeFuncionarios));
-
-        while(!funcCadsatrados.eof())
-        {
-            if(strcmp(auz,cadF.nome)== 0 &&  strcmp(cpf2,cadF.cpf) == 0)
-            {
-                gotoxy(18,20);
-                branco;
-                bpreto;
-                cout << " FUNCIONARIO JA POSSUI CADASTRO ";
-                funcCadsatrados.close();
-                Sleep(2500);
-                menuAdmin(acesso);
-            }
-            funcCadsatrados.read((char *)(&cadF),sizeof(cadastroDeFuncionarios));
-        }
-
         gotoxy(18,20);
         branco;
         bpreto;
@@ -648,25 +629,6 @@ void funcionarioCadastro(int acesso)
         }
         while(n>0);
 
-        funcCadsatrados.open("funcionarios.txt");
-
-        funcCadsatrados.read((char *)(&cadF),sizeof(cadastroDeFuncionarios));
-
-        while(!funcCadsatrados.eof())
-        {
-            if(strcmp(rg2,cadF.rg) == 0)
-            {
-                gotoxy(18,22);
-                branco;
-                bpreto;
-                cout << " FUNCIONARIO JA POSSUI CADASTRO ";
-                funcCadsatrados.close();
-                Sleep(2500);
-                menuAdmin(acesso);
-            }
-            funcCadsatrados.read((char *)(&cadF),sizeof(cadastroDeFuncionarios));
-        }
-
         gotoxy(18,22);
         branco;
         bpreto;
@@ -698,25 +660,6 @@ void funcionarioCadastro(int acesso)
         }
         while(n>0);
 
-        funcCadsatrados.open("funcionarios.txt");
-
-        funcCadsatrados.read((char *)(&cadF),sizeof(cadastroDeFuncionarios));
-
-        while(!funcCadsatrados.eof())
-        {
-            if(strcmp(crm2,cadF.crm) == 0)
-            {
-                gotoxy(18,20);
-                branco;
-                bpreto;
-                cout << " FUNCIONARIO JA POSSUI CADASTRO ";
-                funcCadsatrados.close();
-                Sleep(2500);
-                menuAdmin(acesso);
-            }
-            funcCadsatrados.read((char *)(&cadF),sizeof(cadastroDeFuncionarios));
-        }
-
         gotoxy(18,24);
         branco;
         bpreto;
@@ -743,6 +686,8 @@ void funcionarioCadastro(int acesso)
         }
         while(n>0);
 
+        cadastroFuncionario.open("funcionarios.txt", ios::ate | ios::app);
+
         cadastroFuncionario.write((const char*)(&cadF),sizeof(cadastroDeFuncionarios));
 
         gotoxy(16,26);
@@ -760,13 +705,13 @@ void funcionarioCadastro(int acesso)
         preto;
         cin >> novoCad;
 
+        cadastroFuncionario.close();
 
     }
     while(novoCad == 'S' || novoCad == 's');
 
-    cadastroFuncionario.close();
-
     menuAdmin(acesso);
+    cadastroFuncionario.close();
 
 
 }
@@ -1722,80 +1667,98 @@ void RemoverFunc(CadP cadastro,int acesso)
     preto;
     bbranco;
     cout << "NOME DO FUNCIONARIO";
-    for (int i=0; i<20; i++)
+
+    gotoxy(20,20);
+    preto;
+    bbranco;
+    cout << " DIGITE 1 PARA VOLTAR PARA O MENU ";
+
+    for (int i=0; i<30; i++)
     {
-        gotoxy(39+i,8);
+        gotoxy(23+i,10);
         bbranco;
         nulo;
     }
-    gotoxy(40,8);
+    gotoxy(24,10);
     preto;
     fflush(stdin);
-    cin.getline(nome, 50);
+    cin.getline(nome,50);
+
+    if(strcmp(nome,"1") == 0)
+    {
+        limpaHelp();
+        menuAdmin(acesso);
+    }
 
     for (int i=0; i<number_func(); i++)
     {
         if (strcmp(nome,cadastro[i].nome)==0)
         {
-            gotoxy(26,11);
+            gotoxy(26,12);
             preto;
             bbranco;
             cout << "DESEJA REALMENTE REMOVER?";
-            gotoxy(28,13);
+            gotoxy(28,14);
             preto;
             bbranco;
             cout << "1 - SIM";
-            gotoxy(41,13);
+            gotoxy(41,14);
             preto;
             bbranco;
             cout << "2 - NAO";
             for (int k=0; k<3; k++)
             {
-                gotoxy(35+k,15);
+                gotoxy(35+k,16);
                 bbranco;
                 nulo;
             }
-            gotoxy(36,15);
+            gotoxy(36,16);
             preto;
             cin >> opcao;
             if(opcao == 1)
             {
                 cadastro[i].codigo = 1;
+
                 int recebe = number_func();
+
                 abreFecha(acesso);
 
-                ofstream directory("funcionarios.txt", ios::out | ios::app);
+                ofstream directory("funcionarios.txt",ios::trunc);
 
                 for(int j = 0; j<recebe; j++)
                 {
                     if(cadastro[j].codigo!= 1)
                     {
                         directory.write((const char*)(&cadastro[j]), sizeof(cadastroDeFuncionarios));
-                        px++;
                     }
                 }
                 directory.close();
-                break;
             }
+            px++;
         }
     }
+
+
     if(px == 0)
     {
-        gotoxy(23,10);
+        gotoxy(23,14);
         preto;
         bbranco;
         cout << " FUNCIONARIO NAO CADASTRADO ";
         getch();
-        RemoverFunc(cadastro,acesso);
+        limpaHelp();
     }
     else
     {
-        gotoxy(23,10);
+        gotoxy(23,16);
         preto;
         bbranco;
         cout << " FUNCIONARIO REMOVIDO COM SUCESSO ";
         getch();
+        limpaHelp();
     }
+
+    menuAdmin(acesso);
 }
 
 void agendamento(int acesso)
