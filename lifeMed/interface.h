@@ -74,7 +74,6 @@ struct Data
     int mes;
     int ano;
 };
-
 void ParseData(char str[9], Data *Alvo)
 {
     char _dia[3] =
@@ -113,7 +112,7 @@ struct cadastroDeFuncionarios
     char cargo[50];
     char cpf[12];
     char rg[15];
-    char crm[7];
+    char crm[8];
     int codigo;
     float valorConsulta;
 } cadF;
