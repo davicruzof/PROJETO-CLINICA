@@ -15,7 +15,6 @@ typedef cadastroDeFuncionarios* CadP;
 
 void troco(int valor);
 void pagamento(int acesso,char * nome,char * nomeMed, char * cargo, float valorConsulta);
-void agendamento(int acesso);
 void funcionarioCadastro(int acesso);
 void menuAdmin(int acesso);
 void valor();
@@ -24,6 +23,7 @@ void menuAtendente(int acesso);
 void valorAdmin(int acesso);
 void valorAtendente(int acesso);
 void help(int acesso);
+void agendamento(int acesso);
 void agendamentoPacientes(char * crm);
 void cadastroClientes(int acesso);
 void buscaPaciente(char* medico,char* crm,char* telefone,int acesso);
@@ -67,7 +67,7 @@ void cadastroDoAdmin(int acesso)
     bbranco;
     cout << " 4 - VOLTAR PARA O MENU ADMIN";
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 3; i++)
     {
         gotoxy(35+i,22);
         bbranco;
@@ -103,14 +103,14 @@ void cadastroDoAdmin(int acesso)
         bvermelho;
         cout << " 3 - REMOVER CADASTRO DE FUNCIONARIOS ";
         ExibirFuncionario(acesso);
-        Sleep(1500);
+        Sleep(2000);
         break;
     case 4:
         gotoxy(20,16);
         branco;
         bvermelho;
         cout << " 4 - VOLTAR PARA O MENU ADMIN";
-        Sleep(1500);
+        Sleep(2000);
         menuAdmin(acesso);
         break;
     default:
@@ -156,14 +156,14 @@ void menuAdmin(int acesso)
     bbranco;
     cout << " 4 - ENCERRAR O SISTEMA ";
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 3; i++)
     {
         gotoxy(35+i,22);
         bbranco;
         nulo;
     }
 
-    gotoxy(37,22);
+    gotoxy(36,22);
     preto;
     cin >> opc;
 
@@ -340,16 +340,6 @@ void funcionarioCadastro(int acesso)
     char auz[50],cpf2[12],rg2[15],crm2[7];
 
     int n=1,x=0;
-
-    char dateStr[9];
-
-    Data atual;
-
-    ParseData(dateStr, &atual);
-
-    int ano = atual.ano + 2000;
-    int dia = atual.dia;
-    int mes = atual.mes;
 
     ofstream cadastroFuncionario ("funcionarios.txt", ios::ate | ios::app);
 
@@ -1012,7 +1002,7 @@ void menuAtendente(int acesso)
     bbranco;
     cout << "6 - ENCERRAR O SISTEMA";
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 3; i++)
     {
         gotoxy(35+i,24);
         bbranco;
@@ -1531,7 +1521,7 @@ void receita(char* medico,char* crm,char* telefone,int acesso)
 
     char dateStr[9];
 
-    _strdate(dateStr);
+
 
     Data atual;
 
@@ -1668,60 +1658,6 @@ void receita(char* medico,char* crm,char* telefone,int acesso)
     menuMed(medico,crm,telefone,acesso);
 }
 
-void Menualterar(int acesso)
-{
-    int opcao;
-
-    tela();
-    gotoxy(30,5);
-    branco;
-    bpreto;
-    cout << "REMOCAO DE CADASTRO";
-
-    gotoxy(23,8);
-    preto;
-    bbranco;
-    cout << "1. FUNCIONARIOS";
-    gotoxy(23,10);
-    preto;
-    bbranco;
-    cout << "2. VOLTAR";
-
-    gotoxy(23,14);
-    preto;
-    bbranco;
-    cout << "INFORME A OPCAO ";
-    for (int i=0; i<3; i++)
-    {
-        gotoxy(40+i,14);
-        bbranco;
-        nulo;
-    }
-    gotoxy(41,14);
-    preto;
-    cin >> opcao;
-
-    switch(opcao)
-    {
-    case 1:
-        gotoxy(23,8);
-        branco;
-        bvermelho;
-        cout << "1. FUNCIONARIOS";
-        Sleep(1500);
-        ExibirFuncionario(acesso);
-        break;
-
-    case 2:
-        branco;
-        bvermelho;
-        cout << "2. VOLTAR";
-        Sleep(1500);
-        cadastroDoAdmin(acesso);
-        break;
-    }
-}
-
 int number_func()
 {
     ifstream directory("funcionarios.txt", ios::in);
@@ -1782,80 +1718,85 @@ void RemoverFunc(CadP cadastro,int acesso)
     branco;
     bpreto;
     cout << "REMOCAO DE CADASTRO";
-    gotoxy(23,8);
-    preto;
-    bbranco;
-    cout << "NOME DO MEDICO";
+
     for (int i=0; i<20; i++)
     {
         gotoxy(39+i,8);
         bbranco;
         nulo;
     }
-    gotoxy(40,8);
+    gotoxy(23,8);
+    preto;
+    bbranco;
+    cout << "NOME DO FUNCIONARIO";
+    gotoxy(44,8);
     preto;
     fflush(stdin);
     cin.getline(nome, 50);
 
-        for (int i=0; i<number_func(); i++)
+    for (int i=0; i<number_func(); i++)
+    {
+        if (strcmp(nome,cadastro[i].nome)==0)
         {
-            if (strcmp(nome,cadastro[i].nome)==0)
-            {
-                gotoxy(26,11);
-                preto;
-                bbranco;
-                cout << "DESEJA REALMENTE REMOVER?";
-                gotoxy(28,13);
-                preto;
-                bbranco;
-                cout << "1 - SIM";
-                gotoxy(41,13);
-                preto;
-                bbranco;
-                cout << "2 - NAO";
-                for (int k=0; k<3; k++)
-                {
-                    gotoxy(35+k,15);
-                    bbranco;
-                    nulo;
-                }
-                gotoxy(36,15);
-                preto;
-                cin >> opcao;
-                if(opcao == 1)
-                {
-                    cadastro[i].codigo = 1;
-                    int recebe = number_func();
-                    abreFecha(acesso);
-
-                    ofstream directory("funcionarios.txt", ios::out | ios::app);
-
-                    for(int j = 0; j<recebe; j++)
-                    {
-                        if(cadastro[j].codigo!= 1)
-                        {
-                            directory.write((const char*)(&cadastro[j]), sizeof(cadastroDeFuncionarios));
-                        }
-                    }
-                    directory.close();
-                    break;
-                }
-                else if(opcao == 2)
-                    Menualterar(acesso);
-
-                px++;
-            }
-        }
-        if(px == 0){
-            gotoxy(23,10);
+            gotoxy(26,11);
             preto;
             bbranco;
-            cout << " MEDICO NAO CADASTRADO ";
-            RemoverFunc(cadastro,acesso);
-        }
+            cout << "DESEJA REALMENTE REMOVER?";
+            gotoxy(28,13);
+            preto;
+            bbranco;
+            cout << "1 - SIM";
+            gotoxy(41,13);
+            preto;
+            bbranco;
+            cout << "2 - NAO";
+            for (int k=0; k<3; k++)
+            {
+                gotoxy(35+k,15);
+                bbranco;
+                nulo;
+            }
+            gotoxy(36,15);
+            preto;
+            cin >> opcao;
+            if(opcao == 1)
+            {
+                cadastro[i].codigo = 1;
+                int recebe = number_func();
+                abreFecha(acesso);
 
-    ExibirFuncionario(acesso);
-    menuAdmin(acesso);
+                ofstream directory("funcionarios.txt", ios::out | ios::app);
+
+                for(int j = 0; j<recebe; j++)
+                {
+                    if(cadastro[j].codigo!= 1)
+                    {
+                        directory.write((const char*)(&cadastro[j]), sizeof(cadastroDeFuncionarios));
+                        px=1;
+                    }
+                }
+                directory.close();
+                break;
+            }
+        }
+    }
+    if(px == 0)
+    {
+        gotoxy(23,20);
+        preto;
+        bbranco;
+        cout << " FUNCIONARIO NAO CADASTRADO ";
+        getch();
+        RemoverFunc(cadastro,acesso);
+    }
+    else
+    {
+        gotoxy(23,20);
+        preto;
+        bbranco;
+        cout << " FUNCIONARIO REMOVIDO COM SUCESSO ";
+        getch();
+    }
 }
 
 void agendamento(int acesso)
@@ -1878,6 +1819,11 @@ void agendamento(int acesso)
     branco;
     bpreto;
     cout<<" INFORME A ESPECIALIDADE ";
+
+    gotoxy(20,20);
+    branco;
+    bpreto;
+    cout<<" DIGITE 1 PARA VOLTAR PARA O MENU ";
 
     do
     {
@@ -1925,6 +1871,12 @@ void agendamento(int acesso)
 
         }
         arqMedico.read((char*)(&cadF), sizeof(cadastroDeFuncionarios));
+    }
+
+    if(strcmp(cargo,"1") == 0)
+    {
+        limpaHelp();
+        menuAtendente(acesso);
     }
 
     arqMedico.close();
@@ -2044,60 +1996,63 @@ void agendamento(int acesso)
 
                         ifstream Bclientes("clientes.txt");
 
-                        ofstream agendado(p,ios::app);
-
-                        Bclientes.read((char *)(&cadC),sizeof(clientes));
-
-                        while(!Bclientes.eof())
+                        if(Bclientes.is_open())
                         {
-                            if((strcmp(nome,cadC.nome) == 0 ) && (strcmp(cpf,cadC.cpf) == 0) && i<=10)
+                            Bclientes.read((char *)(&cadC),sizeof(clientes));
+
+                            while(!Bclientes.eof())
                             {
-                                pagamento(acesso,nome,cadF.nome,cadF.cargo,cadF.valorConsulta);
-
-                                agendado << nome << "\n";
-
-                                tela();
-
-                                gotoxy(23,16);
-                                branco;
-                                bpreto;
-                                cout<<" AGENDADO COM SUCESSO ";
-
-                                Sleep(2000);
-
-                                u = 0;
-
-                                agendado.close();
-
-                                ifstream agendados(p);
-
-                                telaHelp();
-                                gotoxy(90,2+i);
-                                preto;
-                                bbranco;
-                                cout << " AGENDADOS ";
-
-                                while(!agendados.eof())
+                                if((strcmp(nome,cadC.nome) == 0 ) && (strcmp(cpf,cadC.cpf) == 0) )
                                 {
-                                    getline(agendados,aux);
-                                    gotoxy(84,5+u);
+                                    pagamento(acesso,nome,cadF.nome,cadF.cargo,cadF.valorConsulta);
+
+                                    ofstream agendado(p,ios::app);
+
+                                    agendado << nome << "\n";
+
+                                    tela();
+
+                                    gotoxy(23,16);
+                                    branco;
+                                    bpreto;
+                                    cout<<" AGENDADO COM SUCESSO ";
+
+                                    Sleep(2000);
+
+                                    u = 0;
+
+                                    agendado.close();
+
+                                    ifstream agendados(p);
+
+                                    telaHelp();
+                                    gotoxy(90,2+i);
                                     preto;
                                     bbranco;
-                                    cout << " - " << aux ;
-                                    u++;
+                                    cout << " AGENDADOS ";
+
+                                    while(!agendados.eof())
+                                    {
+                                        getline(agendados,aux);
+                                        gotoxy(84,5+u);
+                                        preto;
+                                        bbranco;
+                                        cout << " - " << aux ;
+                                        u++;
+                                    }
+
+                                    agendados.close();
+
+                                    i++;
+
                                 }
-
-                                agendados.close();
-
-                                i++;
-
+                                Bclientes.read((char *)(&cadC),sizeof(clientes));
                             }
-                            Bclientes.read((char *)(&cadC),sizeof(clientes));
                         }
 
                         if(i == 1)
                         {
-                            gotoxy(23,16);
+                            gotoxy(20,16);
                             branco;
                             bpreto;
                             cout<<" PACIENTE NAO ENCONTRADO TENTE NOVAMENTE ";
@@ -2111,20 +2066,22 @@ void agendamento(int acesso)
 
                             for (int i = 0; i < 3; i++)
                             {
-                                gotoxy(35+i,20);
+                                gotoxy(55+i,18);
                                 bbranco;
                                 nulo;
                             }
-                            gotoxy(36,20);
+                            gotoxy(56,18);
                             preto;
-                            fflush(stdin);
                             cin >> n;
 
                             if(n == 's' || n == 'S')
                             {
                                 cadastroClientes(acesso);
                             }
-
+                            else
+                            {
+                                menuAtendente(acesso);
+                            }
                         }
 
                         gotoxy(18,18);
@@ -2858,4 +2815,3 @@ void troco(int valor)
     bbranco;
     cout << " MOEDAS DE 1: " << quantiarestante<<endl;
 }
-
